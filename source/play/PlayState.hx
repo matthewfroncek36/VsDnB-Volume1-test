@@ -213,7 +213,55 @@ class PlayState extends MusicBeatState
 	 * Changes the y position of all of the HUD elements based on this type.
 	 */
 	public var scrollType(default, set):String;
-	
+
+	// ===================================================
+	// AUTO BOTPLAY HIT SYSTEM (Vs D&B Volume 1)
+	// ===================================================
+	function botplayAutoHit():Void
+	{
+		// Loop all spawned notes on the player's strumline
+		playingStrumline.forEachNote(function(note:Note)
+		{
+			if (note == null)
+				return;
+
+			// Only player notes
+			if (!note.mustPress)
+				return;
+
+			// Must be hittable
+			if (!note.canBeHit)
+				return;
+
+			// Already hit, skip
+			if (note.hasBeenHit)
+				return;
+
+			// Trigger correct hit system
+			playingStrumline.hitNote(note);
+
+			// Custom animation override (optional)
+			var anim = botGetSingAnim(note.direction);
+			playingChar.playAnim(anim, true);
+			playingChar.holdTimer = 0;
+
+			note.hasBeenHit = true;
+		});
+	}
+
+	// return correct animation name
+	function botGetSingAnim(dir:Int):String
+	{
+		return switch (dir)
+		{
+			case 0: "singLEFT";
+			case 1: "singDOWN";
+			case 2: "singUP";
+			case 3: "singRIGHT";
+			default: "idle";
+		}
+	}
+
 	function set_scrollType(value:String):String
 	{
 		if (dadStrums != null)
@@ -801,7 +849,15 @@ class PlayState extends MusicBeatState
 				opposingChar.playAnim(opposingChar.animation.exists('throw') ? 'throw' : 'smash', true);
 			}
 		});
-		
+
+		// ===================================================
+		// BOTPLAY: auto-hit notes when the preference is enabled
+		// =======================================================
+		if (Preferences.botplay)
+		{
+			botplayAutoHit();
+		}
+
 		handleInputs();
 		processNotes(elapsed);
 	}
