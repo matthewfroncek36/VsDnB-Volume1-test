@@ -51,6 +51,8 @@ class Preferences
 		'fps' => 144,
 		'borderless' => false,
 		'darkMode' => false,
+
+		'botplay' => false,
 	];
 
 	/**
