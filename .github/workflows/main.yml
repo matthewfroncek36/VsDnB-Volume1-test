@@ -35,6 +35,9 @@ jobs:
           haxelib install hmm --quiet
           haxelib run hmm install
           haxelib list
+      - name: Install missing hxvlc
+        run: |
+           haxelib install hxvlc 1.9.2 --always
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
