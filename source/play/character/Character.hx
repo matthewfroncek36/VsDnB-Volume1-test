@@ -329,6 +329,7 @@ class Character extends FlxSprite implements IRegistryEntry<CharacterData> imple
 	 * 
      * @return A new `Character` instance.
      */
+	@:allow(play.character.FlareonCharacter)
 	public static function create(?x:Float = 0, ?y:Float = 0, id:String, ?characterType:CharacterType = OTHER):Character
 	{
 		var char:Character = CharacterRegistry.instance.fetchEntry(id);
@@ -345,6 +346,7 @@ class Character extends FlxSprite implements IRegistryEntry<CharacterData> imple
 	 * Creates a new character instance.
 	 * @param id The id of the character.
 	 */
+	@:allow(play.character.FlareonCharacter)
 	public function new(id:String)
 	{
 		super(x, y);
@@ -373,6 +375,7 @@ class Character extends FlxSprite implements IRegistryEntry<CharacterData> imple
 		skins.set('deathSkin', 'generic-death');
 	}
 
+	@:allow(play.character.FlareonCharacter)
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -546,6 +549,7 @@ class Character extends FlxSprite implements IRegistryEntry<CharacterData> imple
 	/**
 	 * Handles dancing logic and calling dance animations.
 	 */
+	@:allow(play.character.FlareonCharacter)
 	public function dance(force:Bool = false):Void
 	{
 		// If the character isn't able to dance.
@@ -604,6 +608,7 @@ class Character extends FlxSprite implements IRegistryEntry<CharacterData> imple
 	 * @param alt Optional, alt suffix to play for the animation.
 	 * @param singArray The list of sing directions to play based on.
 	 */
+	@:allow(play.character.FlareonCharacter)
 	public function sing(direction:Int, ?miss:Bool = false, ?alt:String = '', ?singArray:Array<String>)
 	{
 		if (singArray == null)
@@ -639,6 +644,7 @@ class Character extends FlxSprite implements IRegistryEntry<CharacterData> imple
 	 * @param reversed (Optional) Whether to play this animation in reverse.
 	 * @param frame (Optional) The frame to start on.
 	 */
+	@:allow(play.character.FlareonCharacter)
 	public function playAnim(name:String, force:Bool = false, reversed:Bool = false, frame:Int = 0):Void
 	{
 		if (animation == null || !animation.exists(name) || (isDanceAnimation(name) && !canDance) || (isSingAnimation(name) && !canSing))
@@ -669,6 +675,7 @@ class Character extends FlxSprite implements IRegistryEntry<CharacterData> imple
 	 * Plays the looping animation from the given base animation name.
 	 * @param name The animation name to play the looping variant of.
 	 */
+	@:allow(play.character.FlareonCharacter)
 	public function playLoopingAnimation(?name:String, force:Bool = true):Void
 	{
 		name ??= animation?.curAnim?.name ?? '';
@@ -692,6 +699,7 @@ class Character extends FlxSprite implements IRegistryEntry<CharacterData> imple
      */
     public function onPlayerNoteHit(event:NoteScriptEvent):Void {}
 	
+	@:allow(play.character.FlareonCharacter)
     public function onNoteMiss(event:NoteScriptEvent):Void
 	{
 		if (event.eventCanceled || event.note.character != this)
@@ -712,6 +720,7 @@ class Character extends FlxSprite implements IRegistryEntry<CharacterData> imple
 		}
 	}
 	
+	@:allow(play.character.FlareonCharacter)
     public function onGhostNoteMiss(event:GhostNoteScriptEvent):Void
 	{
 		if (event.eventCanceled || event.character != this)
@@ -727,6 +736,7 @@ class Character extends FlxSprite implements IRegistryEntry<CharacterData> imple
 		}
 	}
 	
+	@:allow(play.character.FlareonCharacter)
     public function onHoldNoteDrop(event:HoldNoteScriptEvent):Void
 	{
 		if (event.eventCanceled || event.character != this)
@@ -763,6 +773,7 @@ class Character extends FlxSprite implements IRegistryEntry<CharacterData> imple
 	 * Strips any suffixes to the given animation name, leaving it with just the base.
 	 * @param animation The animation to check.
 	 */
+	@:allow(play.character.FlareonCharacter)
 	public function fetchBaseAnimationName(name:String):String
 	{
 		for (suffix in ['-loop', '-ease'])
