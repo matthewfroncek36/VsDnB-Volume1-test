@@ -25,8 +25,8 @@
          "name": "lime",
          "type": "git",
          "dir": null,
-         "ref": "adb5f5c5e7fe73b5ff666f3d66fc0501b385d84e",
-         "url": "https://github.com/T5mpler/lime-dnb"
+         "ref": "main",
+         "url": "https://github.com/QQQEB159/lime-8.2.2"
       },
 
       {
@@ -41,8 +41,10 @@
       },
       {
          "name": "hxcpp",
-         "type": "haxelib",
-         "version": null
+         "type": "git",
+         "dir": null,
+         "ref": "main",
+         "url": "https://github.com/ShadowEngineTeam/hxcpp"
       },
       {
          "name": "format",
