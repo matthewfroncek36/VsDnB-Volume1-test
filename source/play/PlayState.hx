@@ -13,6 +13,7 @@ import data.subtitle.SubtitleRegistry;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.text.FlxText;
 import flixel.FlxSubState;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.input.keyboard.FlxKey;
@@ -214,6 +215,10 @@ class PlayState extends MusicBeatState
 	 */
 	public var scrollType(default, set):String;
 
+public var botplayEnabled:Bool = false;
+private var botplayTxt:FlxText;
+public static var botplay:Bool = false;
+
 	// ===================================================
 	// AUTO BOTPLAY HIT SYSTEM (Vs D&B Volume 1)
 	// ===================================================
@@ -261,6 +266,75 @@ class PlayState extends MusicBeatState
 			default: "idle";
 		}
 	}
+
+function updateBotplay(elapsed:Float)
+{
+    if (!botplay) return;
+
+    // Your player strumline:
+    var pl:Strumline = playingStrumline; // adjust if player index differs
+
+    // Get all notes that are hittable
+    var possibleNotes:Array<Note> = pl.getPossibleNotes();
+
+    // Sort by closest to hit
+    possibleNotes.sort(function(a, b) {
+        return Reflect.compare(
+            Math.abs(Conductor.instance.songPosition - a.strumTime),
+            Math.abs(Conductor.instance.songPosition - b.strumTime)
+        );
+    });
+
+    // ---- HIT TAPS ----
+    for (note in possibleNotes)
+    {
+        if (note == null) continue;
+        if (note.hasBeenHit) continue;
+
+        // Tap note (no sustain)
+        if (note.sustainNote == null)
+        {
+            pl.pressKey(note.direction);
+            pl.hitNote(note);
+            pl.releaseKey(note.direction);
+        }
+        else
+        {
+            // HIT START OF HOLD
+            if (!note.sustainNote.hasBeenHit)
+            {
+                pl.pressKey(note.direction);
+                pl.hitNote(note);
+            }
+        }
+    }
+
+    // ---- HOLD SUSTAINS ----
+    pl.forEachHoldNote(function(hold:SustainNote)
+    {
+        if (hold == null) return;
+
+        var now = Conductor.instance.songPosition;
+
+        // Sustain active window
+        if (now >= hold.strumTime && now <= hold.strumTime + hold.fullSustainLength)
+        {
+            // keep key held
+            pl.pressKey(hold.direction);
+
+            if (!hold.hasBeenHit)
+            {
+                hold.hasBeenHit = true;
+                hold.hasMissed = false;
+            }
+        }
+        else
+        {
+            // release when finished
+            pl.releaseKey(hold.direction);
+        }
+    });
+}
 
 	function set_scrollType(value:String):String
 	{
@@ -703,6 +777,16 @@ class PlayState extends MusicBeatState
 
 		initalizeCamera();
 		initalizeUI();
+		
+		botplayTxt = new FlxText(healthBar.x + healthBar.width / 2 - 75, healthBar.y + (FlxG.save.data.downscroll ? 100 : -100), 0,
+		"BOTPLAY", 20);
+        botplayTxt.setFormat(Paths.font("comic.ttf"), 42, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
+		botplayTxt.scrollFactor.set();
+		botplayTxt.borderSize = 3;
+		botplayTxt.visible = Preferences.botplay;
+        botplayTxt.cameras = [camHUD];
+		add(botplayTxt);
+
 		generateSong();
 		prepareSong();
 
