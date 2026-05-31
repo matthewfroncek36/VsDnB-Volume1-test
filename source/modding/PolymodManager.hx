@@ -253,7 +253,8 @@ class PolymodManager
     public static function buildImports():Void
     {   
         Polymod.addImportAlias('util.ReflectUtil', Reflect);
-        Polymod.addImportAlias('util.ReflectUtil', Type);
+        // Use Type directly as the alias value (some Haxe targets treat Type as abstract).
+        Polymod.addImportAlias('util.Type', Type);
         
         // Blacklist powerful/dangerous classes.
         Polymod.blacklistImport(Type.getClassName(Sys));
@@ -314,13 +315,21 @@ class PolymodManager
         Polymod.addDefaultImport(flixel.group.FlxGroup);
         Polymod.addDefaultImport(flixel.group.FlxSpriteGroup);
         Polymod.addDefaultImport(flixel.util.FlxTimer);
-        Polymod.addDefaultImport(flixel.util.FlxColor);
-        Polymod.addDefaultImport(flixel.math.FlxPoint);
+        // FlxColor is an abstract on some targets; avoid importing it as a default value alias.
+        // Polymod.addDefaultImport(flixel.util.FlxColor);
+
+        // FlxPoint is an abstract on some targets; avoid importing it as a default value alias.
+        // Polymod.addDefaultImport(flixel.math.FlxPoint);
+
         
         // OPENFL //
-        Polymod.addDefaultImport(openfl.filters.ColorMatrixFilter);
-        Polymod.addDefaultImport(openfl.filters.ShaderFilter);
-        Polymod.addDefaultImport(openfl.display.BlendMode);
+        // Avoid registering certain types that can be abstracts on some targets.
+        // Polymod.addDefaultImport(openfl.filters.ColorMatrixFilter);
+
+        // Polymod.addDefaultImport(openfl.filters.ShaderFilter);
+
+        // Polymod.addDefaultImport(openfl.display.BlendMode);
+
 
 
         // LIBRARY //
