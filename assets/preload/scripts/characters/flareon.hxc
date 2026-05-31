@@ -1,12 +1,7 @@
-class FlareonCharacter extends Character 
+class FlareonScriptCharacter extends play.character.FlareonCharacter
 {
 	public function new()
 	{
-    	super('flareon');
-	}
-
-	override function load()
-	{
-    //idk if this is needed
+		super(0, 0, 'flareon');
 	}
 }

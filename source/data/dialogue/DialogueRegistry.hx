@@ -50,6 +50,11 @@ class DialogueRegistry extends BaseRegistry<Dialogue, DialogueData>
         return ScriptedDialogue.scriptInit(clsName, 'generic');
     }
 
+    function createEntry(id:String):Null<Dialogue>
+    {
+        return new Dialogue(id);
+    }
+
     function getScriptedClasses():Array<String>
     {
        return ScriptedDialogue.listScriptClasses();

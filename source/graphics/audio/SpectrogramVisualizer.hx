@@ -262,8 +262,7 @@ class SpectrogramVisualizer extends FlxSpriteGroup
 		super.draw();
 	}
 
-	@:generic
-	static inline function min<T:Float>(x:T, y:T):T
+	static inline function min(x:Int, y:Int):Int
 	{
 		return x > y ? y : x;
 	}

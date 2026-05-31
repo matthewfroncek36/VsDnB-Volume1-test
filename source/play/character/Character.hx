@@ -332,13 +332,19 @@ class Character extends FlxSprite implements IRegistryEntry<CharacterData> imple
 	@:allow(play.character.FlareonCharacter)
 	public static function create(?x:Float = 0, ?y:Float = 0, id:String, ?characterType:CharacterType = OTHER):Character
 	{
-		var char:Character = CharacterRegistry.instance.fetchEntry(id);
+		var char:Character = switch (id.toLowerCase())
+		{
+			case 'flareon', 'flareon-png', 'flareon-rig':
+				new FlareonCharacter(x, y, id, characterType == PLAYER);
+			default:
+				CharacterRegistry.instance.fetchEntry(id);
+		}
 		char.characterType = characterType;
 		char.setPosition(x, y);
-		
+
 		// Initalize the character through a script event.
 		ScriptEventDispatcher.callEvent(char, new ScriptEvent(CREATE, false));
-		
+
 		return char;
 	}
 

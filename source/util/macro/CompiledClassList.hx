@@ -65,8 +65,8 @@ class CompiledClassList
     return classLists.get(request);
   }
 
-  public static inline function getTyped<T>(request:String, type:Class<T>):List<Class<T>>
+  public static inline function getTyped(request:String, type:Class<Dynamic>):List<Class<Dynamic>>
   {
-    return cast get(request);
+    return get(request);
   }
 }

@@ -52,6 +52,11 @@ class PlayerRegistry extends BaseRegistry<PlayableCharacter, PlayerData>
         return ScriptedPlayableCharacter.scriptInit(clsName, 'stage');
     }
 
+    function createEntry(id:String):Null<PlayableCharacter>
+    {
+        return new PlayableCharacter(id);
+    }
+
     function getScriptedClasses():Array<String>
     {
        return ScriptedPlayableCharacter.listScriptClasses();

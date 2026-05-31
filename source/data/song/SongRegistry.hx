@@ -43,6 +43,11 @@ class SongRegistry extends BaseRegistry<Song, SongMetadata>
         return ScriptedSong.scriptInit(cls, 'house');
     }
 
+    function createEntry(id:String):Null<Song>
+    {
+        return new Song(id);
+    }
+
     function getScriptedClasses():Array<String>
     {
         return ScriptedSong.listScriptClasses();

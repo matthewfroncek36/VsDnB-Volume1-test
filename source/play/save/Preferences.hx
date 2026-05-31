@@ -393,6 +393,21 @@ class Preferences
 		return save?.data?.gimmickWarnings;
 	}
 
+	public static var botplay(get, set):Bool;
+
+	static function set_botplay(value:Bool):Bool
+	{
+		save.data.botplay = value;
+		save.flush();
+		onPreferenceChanged.dispatch('botplay', value);
+		return value;
+	}
+
+	static function get_botplay():Bool
+	{
+		return save?.data?.botplay;
+	}
+
 	// MISC //
 	
 	/**

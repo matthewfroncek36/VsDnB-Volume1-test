@@ -124,7 +124,7 @@ class DropShadowShader extends RuntimeShader
 
   function set_altMaskImage(_bitmapData:BitmapData):BitmapData
   {
-    setSampler2D("altMask", _bitmapData);
+    setBitmapData("altMask", _bitmapData);
 
     return _bitmapData;
   }

@@ -50,6 +50,11 @@ class StageRegistry extends BaseRegistry<Stage, StageData>
         return ScriptedStage.scriptInit(clsName, 'stage');
     }
 
+    function createEntry(id:String):Null<Stage>
+    {
+        return new Stage(id);
+    }
+
     function getScriptedClasses():Array<String>
     {
        return ScriptedStage.listScriptClasses();

@@ -11,7 +11,6 @@ import thx.semver.VersionRule;
 
 typedef EntryConstructor = String->Void;
 
-@:generic
 abstract class BaseRegistry<T:(IRegistryEntry<J> & Constructible<EntryConstructor>), J>
 {
     /**
@@ -152,10 +151,7 @@ abstract class BaseRegistry<T:(IRegistryEntry<J> & Constructible<EntryConstructo
      * @param id The id of the entry to create.
      * @return A nullable entry.
      */
-    function createEntry(id:String):Null<T>
-    {
-        return new T(id);
-    }
+    abstract function createEntry(id:String):Null<T>;
 
     /**
      * Does the entry with the given id exist within this registry?

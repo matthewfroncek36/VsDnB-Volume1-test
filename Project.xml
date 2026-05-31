@@ -91,6 +91,7 @@
 	<haxelib name="flixel-animate"/>
 	<haxelib name="grig.audio" />
 	<haxelib name="funkin.vis" />
+	<haxelib name="thx.semver" />
 
 	<section if="FEATURE_TRACY">
 		<haxedef name="HXCPP_TELEMETRY" />

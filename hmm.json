@@ -16,17 +16,13 @@
       },
       {
          "name": "openfl",
-         "type": "git",
-         "dir": null,
-         "ref": "74d8f72890b9ae70bba589d034ea35b86588e548",
-         "url": "https://github.com/T5mpler/openfl-dnb"
+         "type": "haxelib",
+         "version": "9.5.2"
       },
       {
          "name": "lime",
-         "type": "git",
-         "dir": null,
-         "ref": "main",
-         "url": "https://github.com/QQQEB159/lime-8.2.2"
+         "type": "haxelib",
+         "version": "8.3.2"
       },
 
       {
@@ -87,10 +83,8 @@
       },
       {
          "name": "polymod",
-         "type": "git",
-         "dir": null,
-         "ref": "d2d73608e63cf8c6672a19568557fa0ab7882628",
-         "url": "https://github.com/T5mpler/polymod-dnb.git"
+         "type": "haxelib",
+         "version": "1.8.0"
       },
       {
          "name": "json2object",
@@ -106,6 +100,11 @@
          "dir": null,
          "ref": "master",
          "url": "https://github.com/fponticelli/thx.core.git"
+      },
+      {
+         "name": "thx.semver",
+         "type": "haxelib",
+         "version": null
       },
       {
          "name": "jsonpatch",

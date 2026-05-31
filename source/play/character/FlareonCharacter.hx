@@ -4,7 +4,9 @@ import backend.Conductor;
 import Paths;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.math.FlxAngle;
 import flixel.util.FlxColor;
+import play.character.Character.CharacterType;
 using StringTools;
 
 #if (!flash && sys)
@@ -205,7 +207,7 @@ class FlareonCharacter extends Character
 		holdTimer = currentAnim.startsWith('sing') ? holdTimer + elapsed : 0;
 		if (!debugMode
 			&& characterType != CharacterType.PLAYER
-			&& holdTimer >= Conductor.stepCrochet * (0.0011 #if FLX_PITCH / (FlxG.sound.music != null ? FlxG.sound.music.pitch : 1) #end) * singDuration)
+			&& holdTimer >= Conductor.instance.stepCrochet * (0.0011 #if FLX_PITCH / (FlxG.sound.music != null ? FlxG.sound.music.pitch : 1) #end) * singDuration)
 		{
 			dance();
 			holdTimer = 0;
@@ -1014,8 +1016,9 @@ class FlareonCharacter extends Character
 			return;
 
 		var runtimeShader:FlxRuntimeShader = cast spr.shader;
-		runtimeShader.setFloatArray('uFrameBounds', [spr.frame.uv.u, spr.frame.uv.v, spr.frame.uv.u2 - uv.u, spr.frame.uv.v2 - uv.v]);
-		runtimeShader.setFloat('angOffset', spr.frame.angle * (Math.PI / 180));
+		runtimeShader.setFloatArray('uFrameBounds',
+			[spr.frame.uv.left, spr.frame.uv.right, spr.frame.uv.left + spr.frame.uv.top, spr.frame.uv.right + spr.frame.uv.bottom]);
+		runtimeShader.setFloat('angOffset', spr.frame.angle * FlxAngle.TO_RAD);
 		#end
 	}
 

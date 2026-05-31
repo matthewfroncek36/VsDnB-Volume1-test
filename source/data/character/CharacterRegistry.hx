@@ -3,6 +3,7 @@ package data.character;
 import json2object.JsonParser;
 import openfl.utils.Assets;
 import play.character.Character;
+import play.character.FlareonCharacter;
 import play.character.ScriptedCharacter;
 
 class CharacterRegistry extends BaseRegistry<Character, CharacterData>
@@ -82,6 +83,13 @@ class CharacterRegistry extends BaseRegistry<Character, CharacterData>
      */
     public override function fetchEntry(id:String):Character
     {
+		switch (id.toLowerCase())
+		{
+			case 'flareon', 'flareon-png', 'flareon-rig':
+				return new FlareonCharacter(0, 0, id);
+			default:
+		}
+
         var charScriptClass:Null<String> = characterScriptClasses.get(id);
         var charData:Null<CharacterData> = characterDataCache.get(id);
         var char:Character = null;
@@ -130,6 +138,11 @@ class CharacterRegistry extends BaseRegistry<Character, CharacterData>
     function createScriptedEntry(clsName:String):Character
     {
         return ScriptedCharacter.scriptInit(clsName, 'bf');
+    }
+
+    function createEntry(id:String):Null<Character>
+    {
+        return new Character(id);
     }
 
     function getScriptedClasses():Array<String>
