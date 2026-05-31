@@ -314,10 +314,14 @@ class PolymodManager
         Polymod.addDefaultImport(flixel.group.FlxGroup);
         Polymod.addDefaultImport(flixel.group.FlxSpriteGroup);
         Polymod.addDefaultImport(flixel.util.FlxTimer);
+        Polymod.addDefaultImport(flixel.util.FlxColor);
+        Polymod.addDefaultImport(flixel.math.FlxPoint);
         
         // OPENFL //
         Polymod.addDefaultImport(openfl.filters.ColorMatrixFilter);
         Polymod.addDefaultImport(openfl.filters.ShaderFilter);
+        Polymod.addDefaultImport(openfl.display.BlendMode);
+
 
         // LIBRARY //
         Polymod.addDefaultImport(hxvlc.flixel.FlxVideo);
