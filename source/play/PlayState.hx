@@ -1875,7 +1875,7 @@ class PlayState extends MusicBeatState
 		if (isInCutscene || !generatedMusic)
 			return;
 
-		var heldDirections:Array<Bool> = [for (i in 0...playingStrumline.strumAmount) false];
+		var heldDirections:Array<Bool> = [for (i in 0...Strumline.strumAmount) false];
 		var now:Float = Conductor.instance.songPosition;
 
 		playingStrumline.forEachHoldNote(function(holdNote:SustainNote)
@@ -1898,7 +1898,7 @@ class PlayState extends MusicBeatState
 			if (now < note.strumTime)
 				continue;
 
-			var direction:Int = note.direction % playingStrumline.strumAmount;
+			var direction:Int = note.direction % Strumline.strumAmount;
 			playingStrumline.pressKey(direction);
 
 			if (note.sustainNote != null)
@@ -1907,7 +1907,7 @@ class PlayState extends MusicBeatState
 			playingStrumline.hitNote(note);
 		}
 
-		for (direction in 0...playingStrumline.strumAmount)
+		for (direction in 0...Strumline.strumAmount)
 		{
 			if (heldDirections[direction])
 			{
