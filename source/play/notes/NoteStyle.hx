@@ -3,6 +3,7 @@ package play.notes;
 import backend.Conductor;
 import data.animation.Animation.AnimationData;
 import flixel.math.FlxPoint;
+import play.notes.Strumline;
 
 import flixel.FlxSprite;
 
@@ -46,7 +47,17 @@ abstract NoteStyle(String) from String to String
 			case 'shape': 'shape/NOTE_Shape_strumline';
 			case 'phone' | 'phone-alt': 'phone/NOTE_phone';
 			case 'top10': 'top10/OMGtop10awesomehi';
-			case 'pixel': 'pixel/NOTE_pixel_strumline';
+			case 'pixel':
+				switch (Strumline.strumAmount)
+				{
+					case 5: 'pixel/NOTE_pixel_strumline_5';
+					case 6: 'pixel/NOTE_pixel_strumline_6';
+					case 7: 'pixel/NOTE_pixel_strumline_7';
+					case 8: 'pixel/NOTE_pixel_strumline_8';
+					case 9: 'pixel/NOTE_pixel_strumline_9';
+					case 12: 'pixel/NOTE_pixel_strumline_12';
+					default: 'pixel/NOTE_pixel_strumline';
+				}
 			default: 'normal/NOTE_strumline';
 		}
 	}
@@ -68,17 +79,53 @@ abstract NoteStyle(String) from String to String
 	}
 
 	/**
+	 * The size for the notes and hold covers, differentiating with how many strum notes there are.
+	 */
+	public var multiKeySize(get, never):Float;
+
+	function get_multiKeySize():Float {
+		return switch (this) 
+		{
+			case '3d':
+				switch (Strumline.strumAmount)
+				{
+					case 5: 0.6;
+					case 6: 0.55;
+					case 7: 0.5;
+					case 8, 9: 0.45;
+					case 12: 0.35;
+					default: 0.65;
+				}
+			case 'pixel':
+				switch (Strumline.strumAmount)
+				{
+					case 5: 5.5;
+					case 6: 5;
+					case 7: 4.5;
+					case 8, 9: 4;
+					case 12: 3;
+					default: 6;
+				}
+			default:
+				switch (Strumline.strumAmount)
+				{
+					case 5: 0.65;
+					case 6: 0.6;
+					case 7: 0.55;
+					case 8, 9: 0.5;
+					case 12: 0.4;
+					default: 0.7;
+				}
+		}
+	}
+
+	/**
 	 * The size of this style.
 	 */
 	public var styleSize(get, never):Float;
 
 	function get_styleSize():Float {
-		return switch (this) 
-		{
-			case 'pixel': 6;
-			case '3d': 0.65;
-			default: 0.7;
-		}
+		return multiKeySize;
 	}
 
 	/**
@@ -89,8 +136,8 @@ abstract NoteStyle(String) from String to String
 	function get_holdCoverSize():Float {
 		return switch (this)
 		{
-			case 'pixel': 6;
-			default: 1;
+			case 'pixel': multiKeySize;
+			default: multiKeySize * 1.42857;
 		}
 	}
 
@@ -245,16 +292,46 @@ abstract NoteStyle(String) from String to String
 				sprite.animation.add('blueScroll', [1]);
 				sprite.animation.add('greenScroll', [2]);
 				sprite.animation.add('redScroll', [3]);
+				sprite.animation.add('yellowScroll', [4]);
+				sprite.animation.add('violetScroll', [5]);
+				sprite.animation.add('crimsonScroll', [6]);
+				sprite.animation.add('cobaltScroll', [7]);
+				sprite.animation.add('whiteScroll', [8]);
+				sprite.animation.add('pinkScroll', [9]);
+				sprite.animation.add('turqScroll', [10]);
+				sprite.animation.add('emeraldScroll', [11]);
+				sprite.animation.add('lightredScroll', [12]);
 			case 'shape':
+				sprite.animation.addByPrefix('purpleScroll', 'purple0');
+				sprite.animation.addByPrefix('blueScroll', 'blue0');
 				sprite.animation.addByPrefix('greenScroll', 'green0');
 				sprite.animation.addByPrefix('redScroll', 'red0');
-				sprite.animation.addByPrefix('blueScroll', 'blue0');
+				sprite.animation.addByPrefix('cobaltScroll', 'cobalt0');
+				sprite.animation.addByPrefix('yellowScroll', 'yellow0');
+			case 'phone':
 				sprite.animation.addByPrefix('purpleScroll', 'purple0');
+				sprite.animation.addByPrefix('blueScroll', 'blue0');
+				sprite.animation.addByPrefix('redScroll', 'red0');
+				sprite.animation.addByPrefix('greenScroll', 'green0');
+				sprite.animation.addByPrefix('whiteScroll', 'white0');
+				sprite.animation.addByPrefix('yellowScroll', 'yellow0');
+				sprite.animation.addByPrefix('violetScroll', 'violet0');
+				sprite.animation.addByPrefix('cobaltScroll', 'cobalt0');
+				sprite.animation.addByPrefix('crimsonScroll', 'crimson0');
 			default:
 				sprite.animation.addByPrefix('purpleScroll', 'purple0');
 				sprite.animation.addByPrefix('blueScroll', 'blue0');
 				sprite.animation.addByPrefix('greenScroll', 'green0');
 				sprite.animation.addByPrefix('redScroll', 'red0');
+				sprite.animation.addByPrefix('whiteScroll', 'white0');
+				sprite.animation.addByPrefix('yellowScroll', 'yellow0');
+				sprite.animation.addByPrefix('violetScroll', 'violet0');
+				sprite.animation.addByPrefix('cobaltScroll', 'cobalt0');
+				sprite.animation.addByPrefix('crimsonScroll', 'crimson0');
+				sprite.animation.addByPrefix('emeraldScroll', 'emerald0');
+				sprite.animation.addByPrefix('lightredScroll', 'lightred0');
+				sprite.animation.addByPrefix('turqScroll', 'turq0');
+				sprite.animation.addByPrefix('pinkScroll', 'pink0');
 		}
 	}
 
