@@ -103,6 +103,17 @@ class Song implements IRegistryEntry<SongMetadata> implements IPlayStateScripted
      */
     public var validScore:Bool;
 
+    /**
+     * How many keys there will be on the strumline.
+     */
+    public var keyCount(get, never):Int;
+
+    function get_keyCount():Int
+    {
+        if (_data == null) return 4;
+        return _data.keyCount;
+    }
+
     public function new(id:String)
     {
         this.id = id;
@@ -219,6 +230,7 @@ class Song implements IRegistryEntry<SongMetadata> implements IPlayStateScripted
             playChart.opponent = metadata.opponent;
             playChart.girlfriend = metadata.girlfriend;
             playChart.timeChanges = metadata.timeChanges;
+            playChart.keyCount = metadata.keyCount;
             
             playChart.stage = metadata.stage;
 
@@ -352,6 +364,8 @@ class SongPlayChart
     public var girlfriend:String;
 
     public var timeChanges:Array<SongTimeChange>;
+
+    public var keyCount:Int;
 
     public var speed:Float;
     public var notes:Array<SongSection>;
