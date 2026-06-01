@@ -17,7 +17,7 @@ import ui.select.playerSelect.PlayerSelect;
 class Note extends FlxSprite
 {
 	/**
-	 * The default color directions for 4-key notes.
+	 * The default color directions for notes.
 	 */
 	public static var COLOR_DIRECTIONS = ['purple', 'blue', 'green', 'red'];
 
@@ -204,6 +204,12 @@ class Note extends FlxSprite
 	 * Whether the scale of this note should be the same as it's parent strumline, if one exists.
 	 */
 	public var copyScale:Bool = true;
+
+	/**
+	 * The original direction of the note.
+	 * Exists in-case the direction changes due to modcharts, or anything else.
+	 */
+	public var originalType:Int = 0;
 	
 	/**
 	 * Internal variable for keeping track of Bambi phone smashes.
@@ -227,6 +233,7 @@ class Note extends FlxSprite
 		super(0, -9999);
 
 		this.direction = direction;
+		this.originalType = direction;
 		this.mustPress = musthit;
 		this.inCharter = inCharter;
 
@@ -252,6 +259,7 @@ class Note extends FlxSprite
 	{
 		super.kill();
 
+		originalType = 0;
 		tooEarly = false;
 		tooLate = false;
 		canBeHit = false;
@@ -263,6 +271,7 @@ class Note extends FlxSprite
 	{
 		super.revive();
 
+		originalType = 0;
 		alpha = 1;
 		sustainNote = null;
 
@@ -277,6 +286,16 @@ class Note extends FlxSprite
 	 */
 	function buildNoteGraphic(noteStyle:NoteStyle)
 	{
+		COLOR_DIRECTIONS = switch (Strumline.strumAmount)
+		{
+			case 5: ['purple', 'blue', 'white', 'green', 'red'];
+			case 6: ['purple', 'green', 'red', 'yellow', 'blue', 'cobalt'];
+			case 7: ['purple', 'green', 'red', 'white', 'yellow', 'violet', 'cobalt'];
+			case 8: ['purple', 'blue', 'green', 'red', 'yellow', 'violet', 'crimson', 'cobalt'];
+			case 9: ['purple', 'blue', 'green', 'red', 'white', 'yellow', 'violet', 'crimson', 'cobalt'];
+			case 12: ['purple', 'blue', 'green', 'red', 'pink', 'turq', 'emerald', 'lightred', 'yellow', 'violet', 'crimson', 'cobalt'];
+			default: ['purple', 'blue', 'green', 'red'];
+		}
 		this.colorDirections = COLOR_DIRECTIONS;
 
 		if (['normal', '', null, "0"].contains(noteStyle) && !inCharter)
@@ -355,7 +374,7 @@ class Note extends FlxSprite
 			strumGroup = (FlxG.state is PlayState) ? (mustPress ? PlayState.instance.playerStrums : PlayState.instance.dadStrums) : null;
 		}
 		
-		strum = strumGroup?.strums?.members[this.direction] ?? null;
+		strum = strumGroup?.strums?.members[this.originalType] ?? null;
 		copyStrum();
 	}
 
