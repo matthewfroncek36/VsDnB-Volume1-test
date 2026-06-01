@@ -62,8 +62,10 @@ class Main extends Sprite
 	private function setupGame():Void
 	{
 		modding.PolymodManager.initalize();
+		trace('STARTUP setupGame: polymod ready');
 
 		fps = new FPSDisplay(10, 3, 0xFFFFFF);
+		trace('STARTUP setupGame: fps ready');
 		var fpsFormat = new TextFormat("Comic Sans MS Bold", 15, 0xFFFFFF, true);
 		fps.defaultTextFormat = fpsFormat;
 
@@ -79,14 +81,18 @@ class Main extends Sprite
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
 		var game = new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end frameRate, frameRate, true, startFullscreen);
+		trace('STARTUP setupGame: flxgame ready');
 
 		@:privateAccess
 		game._customSoundTray = GameSoundTray;
 
 		@:privateAccess
 		untyped FlxG.cameras = new GameCameraFrontEnd();
+		trace('STARTUP setupGame: camera frontend ready');
 
 		addChild(game);
+		trace('STARTUP setupGame: game added');
 		addChild(fps);
+		trace('STARTUP setupGame: fps added');
 	}
 }

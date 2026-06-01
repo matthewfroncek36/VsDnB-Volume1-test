@@ -1,7 +1,0 @@
-class FlareonScriptCharacter extends play.character.FlareonCharacter
-{
-	public function new()
-	{
-		super(0, 0, 'flareon');
-	}
-}
