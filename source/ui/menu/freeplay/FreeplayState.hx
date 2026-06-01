@@ -383,11 +383,21 @@ class FreeplayState extends MusicBeatState
 		else
 		{
 			// Freeplay Functions
+			// Safety: guard against async timing where songs[] isn't populated yet.
+			if (songs == null || songs.length == 0)
+				return;
+
+			if (curSelected < 0)
+				curSelected = 0;
+			else if (curSelected >= songs.length)
+				curSelected = songs.length - 1;
+
 			var upP = controls.UP_P || FlxG.mouse.wheel > 0;
 			var downP = controls.DOWN_P || FlxG.mouse.wheel < 0;
 			var accepted = controls.ACCEPT;
 
 			onUpdate(elapsed);
+
 
 			if (upP && canInteract)
 			{
