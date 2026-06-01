@@ -1,13 +1,9 @@
 import flixel.math.FlxMath;
 import play.character.CharacterType;
 
-enum BGType
-{
-    Room; Studio; Matrix;
-}
 class BotTrotEvents extends SongModule
 {
-    var curBg:BGType;
+    var curBg:String;
 
     var greyscaleAmt:Float = 0.25;
     var normal:Array<Float> = [
@@ -55,7 +51,7 @@ class BotTrotEvents extends SongModule
     public function new()
     {
         super('botTrotEvents', 0, 'bot-trot');
-        curBg = BGType.Room;
+        curBg = 'room';
     }
 
     function onCreatePost(e:ScriptEvent)
@@ -330,11 +326,11 @@ class BotTrotEvents extends SongModule
     function onCameraMove(e:CameraScriptEvent)
     {
         switch (curBg) {
-            case BGType.Studio:
+            case 'studio':
                 if (!e.isOpponent) {
                     game.camGame.followPoint.y = game.dad.cameraFocusPoint.y;
                 }
-            case BGType.Matrix:
+            case 'matrix':
                 game.camGame.setFollow(game.boyfriend.cameraFocusPoint.x + 100, game.boyfriend.cameraFocusPoint.y);
         }
     }
@@ -363,7 +359,7 @@ class BotTrotEvents extends SongModule
     }
     function switchToStudio()
     {
-        curBg = BGType.Studio;
+        curBg = 'studio';
         
         game.currentStage.moveCharactersToStage(studioStage);
         game.currentStage = studioStage;
@@ -393,7 +389,7 @@ class BotTrotEvents extends SongModule
 
         game.camMoveOnNoteAllowed = false;
         var transitionTime = (Conductor.instance.stepCrochet / 1000) * 224;
-        curBg = BGType.Matrix;
+        curBg = 'matrix';
 
         for (i in [game.dad, game.gf])
         {
@@ -424,7 +420,7 @@ class BotTrotEvents extends SongModule
     }
     function switchBackToRoom()
     {
-        curBg = BGType.Room;
+        curBg = 'room';
         
         game.defaultCamZoom = 0.7;
 

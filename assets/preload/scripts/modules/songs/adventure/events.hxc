@@ -27,7 +27,7 @@ class AdventureEvents extends SongModule
     var playerCamFollow:FlxObject = new FlxObject(0, 0, 1, 1);
 
     var blur:BlurFilter = new BlurFilter(0, 0, 5);
-    var mosaic:RuntimeShader = new RuntimeShader(Paths.frag('mosaic'));
+    var mosaic:RuntimeShader;
 
     var bfGhost1:Character;
     var bfGhost2:Character;
@@ -63,6 +63,7 @@ class AdventureEvents extends SongModule
         game.add(parkStage);
 
         curStage = tristanRoomStage;
+        mosaic = new RuntimeShader(Paths.frag('mosaic'));
         
         blackBehind = new FlxSprite().makeGraphic(1, 1, FlxColor.BLACK);
         blackBehind.scale.set(FlxG.width * 3, FlxG.height * 3);
