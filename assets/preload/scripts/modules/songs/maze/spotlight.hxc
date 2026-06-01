@@ -1,6 +1,3 @@
-import flixel.math.FlxPoint;
-import flixel.util.FlxColor;
-import openfl.display.BlendMode;
 
 class MazeSpotlight extends SongModule
 {

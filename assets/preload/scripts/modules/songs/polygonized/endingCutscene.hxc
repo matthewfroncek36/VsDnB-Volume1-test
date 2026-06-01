@@ -1,5 +1,3 @@
-import flixel.util.FlxColor;
-import flixel.math.FlxPoint;
 import play.character.CharacterType;
 
 class PolygonizedEndingCutscene extends SongModule

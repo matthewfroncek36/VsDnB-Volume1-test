@@ -255,9 +255,6 @@ class PolymodManager
         Polymod.addImportAlias('util.ReflectUtil', Reflect);
         // Use Type directly as the alias value (some Haxe targets treat Type as abstract).
         Polymod.addImportAlias('util.Type', Type);
-        Polymod.addImportAlias('flixel.util.FlxColor', scripting.imports.HScriptFlxColor);
-        Polymod.addImportAlias('flixel.math.FlxPoint', scripting.imports.HScriptFlxPoint);
-        Polymod.addImportAlias('openfl.display.BlendMode', scripting.imports.HScriptBlendMode);
         
         // Blacklist powerful/dangerous classes.
         Polymod.blacklistImport(Type.getClassName(Sys));

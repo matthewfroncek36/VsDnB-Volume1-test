@@ -1,4 +1,3 @@
-import flixel.util.FlxColor;
 
 class MazeEvents extends SongModule
 {

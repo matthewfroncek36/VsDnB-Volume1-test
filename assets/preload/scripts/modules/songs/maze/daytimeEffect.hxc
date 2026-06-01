@@ -1,5 +1,4 @@
 import flixel.tweens.misc.ColorTween;
-import flixel.util.FlxColor;
 import util.tools.MapTools;
 
 class MazeDaytimeEffect extends SongModule

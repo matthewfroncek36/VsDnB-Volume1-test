@@ -1,5 +1,4 @@
 import audio.SoundType;
-import flixel.util.FlxColor;
 
 class RapBattleStage extends Stage
 {

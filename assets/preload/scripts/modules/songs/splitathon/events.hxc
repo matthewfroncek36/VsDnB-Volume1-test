@@ -1,7 +1,5 @@
 import flixel.FlxBasic;
-import flixel.math.FlxPoint;
 import flixel.util.FlxGradient;
-import flixel.util.FlxColor;
 
 import play.character.CharacterType;
 import play.notes.StrumNote;

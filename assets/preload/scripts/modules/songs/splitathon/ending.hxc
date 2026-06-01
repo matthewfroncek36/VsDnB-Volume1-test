@@ -1,4 +1,3 @@
-import flixel.util.FlxColor;
 
 class SplitathonEnding extends SongModule
 {

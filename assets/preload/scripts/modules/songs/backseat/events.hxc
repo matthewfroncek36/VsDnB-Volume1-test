@@ -1,5 +1,4 @@
 import flixel.util.FlxGradient;
-import flixel.util.FlxColor;
 import play.notes.Strumline;
 import play.stage.ScriptedStage;
 import play.song.SongPlayChart;

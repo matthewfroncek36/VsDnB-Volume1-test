@@ -1,4 +1,3 @@
-import flixel.math.FlxPoint;
 import play.character.CharacterType;
 
 class InsanityEvents extends SongModule

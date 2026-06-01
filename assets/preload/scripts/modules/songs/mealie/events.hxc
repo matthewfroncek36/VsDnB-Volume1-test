@@ -1,5 +1,3 @@
-import flixel.math.FlxPoint;
-import flixel.util.FlxColor;
 import flixel.util.FlxGradient;
 import play.character.CharacterType;
 import play.camera.FollowType;

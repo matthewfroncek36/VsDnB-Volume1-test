@@ -1,4 +1,3 @@
-import flixel.math.FlxPoint;
 import play.camera.FollowType;
 import play.ui.CountdownStep;
 import play.stage.ScriptedStage;

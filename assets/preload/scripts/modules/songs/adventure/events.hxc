@@ -1,8 +1,6 @@
 import flixel.FlxCameraFollowStyle;
 import flixel.FlxObject;
-import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.util.FlxColor;
 import openfl.filters.BlurFilter;
 import play.camera.FollowType;
 import play.stage.ScriptedStage;
