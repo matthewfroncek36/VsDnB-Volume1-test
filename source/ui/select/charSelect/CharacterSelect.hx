@@ -804,20 +804,22 @@ class CharacterSelect extends MusicBeatState
 
 	public static function initSave()
 	{
-		if (FlxG.save.data.charactersUnlocked == null)
-		{
-			FlxG.save.data.charactersUnlocked = new Array<String>();
-			FlxG.save.flush();
-		}
+		FlxG.save.data.charactersUnlocked = new Array<String>();
 	}
 
 	public static function isLocked(character:String):Bool
 	{
+		if (FlxG.save.data.charactersUnlocked == null)
+			initSave();
+
 		return !FlxG.save.data.charactersUnlocked.contains(character);
 	}
 
 	public static function unlockCharacter(character:String)
 	{
+		if (FlxG.save.data.charactersUnlocked == null)
+			initSave();
+
 		if (!FlxG.save.data.charactersUnlocked.contains(character))
 		{
 			FlxG.save.data.charactersUnlocked.push(character);

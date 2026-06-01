@@ -17,9 +17,36 @@ class Highscore
 	 */
 	public static function load():Void
 	{
-		if (FlxG.save.data.songScores != null)
+		songScores = new Map();
+
+		var savedScores:Dynamic = Reflect.field(FlxG.save.data, 'songScores');
+		if (savedScores == null)
+			return;
+
+		if (Std.isOfType(savedScores, haxe.ds.StringMap))
 		{
-			songScores = FlxG.save.data.songScores;
+			var savedMap:Map<String, Dynamic> = cast savedScores;
+			for (song in savedMap.keys())
+			{
+				var score = Std.parseInt(Std.string(savedMap.get(song)));
+				if (score != null)
+					songScores.set(song, score);
+			}
+
+			return;
+		}
+
+		if (Reflect.isObject(savedScores))
+		{
+			for (song in Reflect.fields(savedScores))
+			{
+				var score = Std.parseInt(Std.string(Reflect.field(savedScores, song)));
+				if (score != null)
+					songScores.set(song, score);
+			}
+
+			FlxG.save.data.songScores = songScores;
+			FlxG.save.flush();
 		}
 	}
 	/**
