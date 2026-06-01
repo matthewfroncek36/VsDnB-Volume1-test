@@ -167,6 +167,29 @@ class BotTrotEvents extends SongModule
             case 112:
                 game.defaultCamZoom += 0.2;
                 
+                game.camGame.lockTarget = true;
+
+                game.forceFocusOnChar = true;
+                
+                game.dad.canDance = false;
+                game.dad.playAnim('game', true);
+                game.dad.animation.onFinish.addOnce(function(anim:String) {
+                    game.dad.canDance = true;
+                    game.dad.dance();
+                });
+                return;
+            case 128:
+                game.defaultCamZoom -= 0.2;
+                game.camGame.lockTarget = false;
+                game.forceFocusOnChar = false;
+                return;
+            case 256:
+                game.defaultCamZoom += 0.1;
+                return;
+            case 384, 896:
+                game.defaultCamZoom = 0.65;
+
+                
                 game.camGame.setFollow(game.dad.cameraFocusPoint.x, game.dad.cameraFocusPoint.y);
                 game.camGame.lockTarget = true;
                 game.forceFocusOnChar = true;
@@ -177,12 +200,15 @@ class BotTrotEvents extends SongModule
                     game.dad.canDance = true;
                     game.dad.dance();
                 });
+                return;
             case 128:
                 game.defaultCamZoom -= 0.2;
                 game.camGame.lockTarget = false;
                 game.forceFocusOnChar = false;
+                return;
             case 256:
                 game.defaultCamZoom += 0.1;
+                return;
             case 384, 896:
                 game.defaultCamZoom = 0.65;
                 if (e.step == 896) {
@@ -231,10 +257,17 @@ class BotTrotEvents extends SongModule
                 FlxTween.tween(blackHUD, {alpha: 0}, 0.5);
                 game.camHUD.filters = [colorMatrixShader];
             case 1130:
-                super.bfSingTimer.cancel();
+                if (blackHUD != null)
+                    FlxTween.tween(blackHUD, {alpha: 0}, 0.5);
+                if (game.camHUD != null)
+                    game.camHUD.filters = [colorMatrixShader];
+                if (super.bfSingTimer != null)
+                    super.bfSingTimer.cancel();
                 game.boyfriend.sing(1, true);
+                return;
             case 1134:
                 game.dad.canDance = false;
+
                 game.dad.playAnim('messedUp', true);
                 game.dad.animation.onFinish.addOnce(function(anim:String) {
                     game.dad.canDance = true;
@@ -242,6 +275,8 @@ class BotTrotEvents extends SongModule
                     
                     game.boyfriend.canDance = true;
                 });
+                return;
+
             case 1408:
                 game.defaultCamZoom += 0.1;
                 FlxTween.tween(vignette, {alpha: 0.6}, 0.5);
