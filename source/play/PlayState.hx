@@ -2061,7 +2061,17 @@ class PlayState extends MusicBeatState
 
 		var amount:Array<Float> = new Array<Float>();
 		var followAmount:Float = (Preferences.cameraNoteMovement && camMoveOnNoteAllowed) ? 20 : 0;
-		switch (note)
+		var cameraDirections:Array<Int> = switch (Strumline.strumAmount)
+		{
+			case 5: [0, 1, 2, 2, 3];
+			case 6: [0, 2, 3, 0, 1, 3];
+			case 7: [0, 2, 3, 2, 0, 1, 3];
+			case 8: [0, 1, 2, 3, 0, 1, 2, 3];
+			case 9: [0, 1, 2, 3, 2, 0, 1, 2, 3];
+			case 12: [0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3];
+			default: [0, 1, 2, 3];
+		}
+		switch (cameraDirections[note] ?? 0)
 		{
 			case 0:
 				amount[0] = -followAmount;
@@ -2395,12 +2405,7 @@ class PlayState extends MusicBeatState
 	 */
 	function badNoteCheck():Void
 	{
-		var upP = controls.UP_P;
-		var rightP = controls.RIGHT_P;
-		var downP = controls.DOWN_P;
-		var leftP = controls.LEFT_P;
-
-		var controlArray:Array<Bool> = [leftP, downP, upP, rightP];
+		var controlArray:Array<Bool> = buildControlArray(true);
 
 		for (i in 0...controlArray.length)
 		{
