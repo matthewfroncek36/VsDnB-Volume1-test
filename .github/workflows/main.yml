@@ -22,21 +22,37 @@ jobs:
             target: windows
             artifactName: windowsBuild
             artifactPath: export/release/windows/bin
+            buildArgs: ''
           - name: Linux
             os: ubuntu-latest
             target: linux
             artifactName: linuxBuild
             artifactPath: export/release/linux/bin
+            buildArgs: ''
           - name: macOS
             os: macos-latest
             target: mac
             artifactName: macOSBuild
             artifactPath: export/release/macos/bin
+            buildArgs: ''
           - name: HTML5
             os: ubuntu-latest
             target: html5
             artifactName: html5Build
             artifactPath: export/release/html5/bin
+            buildArgs: ''
+          - name: Android
+            os: macos-latest
+            target: android
+            artifactName: androidBuild
+            artifactPath: export/release/android
+            buildArgs: '-ONLY_ARM64'
+          - name: iOS
+            os: macos-latest
+            target: ios
+            artifactName: iosBuild
+            artifactPath: export/release/ios
+            buildArgs: ''
 
     steps:
       - uses: actions/checkout@v4
@@ -58,14 +74,23 @@ jobs:
           haxelib run hmm install
           haxelib list
 
+      - name: Configure Lime for Android
+        if: matrix.target == 'android'
+        run: |
+          haxelib run lime config ANDROID_SDK "$ANDROID_HOME"
+          haxelib run lime config ANDROID_NDK_ROOT "$ANDROID_NDK_LATEST_HOME"
+          haxelib run lime config JAVA_HOME "$JAVA_HOME"
+          haxelib run lime config ANDROID_SETUP true
+
       - name: Create Version Tag
         run: echo "${{ github.run_id }}" > VERSION
 
       - name: Compile
-        run: haxelib run lime build ${{ matrix.target }} --app-version="4.0.0-${{ github.run_id }}"
+        run: haxelib run lime build ${{ matrix.target }} ${{ matrix.buildArgs }} --app-version="4.0.0-${{ github.run_id }}"
 
       - name: Publish Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifactName }}
           path: ${{ matrix.artifactPath }}
+          if-no-files-found: warn

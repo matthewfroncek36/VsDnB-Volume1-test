@@ -23,7 +23,7 @@
 
 
 	<!--Mobile-->
-	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" resizable="false"/>
+	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" resizable="false" allow-shaders="true" require-shaders="true"/>
 	<!-- _____________________________ Path Settings ____________________________ -->
 
 	<classpath name="source" />
@@ -83,7 +83,7 @@
 
 	<haxelib name="flixel" />
 	<haxelib name="flixel-addons" />
-	<haxelib name="hxvlc" if="desktop || android" />
+	<haxelib name="hxvlc" if="desktop || mobile" />
 	<haxelib name="hscript" />
 	<haxelib name="polymod" />
 	<haxelib name="json2object" />
@@ -124,6 +124,7 @@
 	
 	<haxedef name="openfl-enable-handle-error" />
 	<haxedef name="analyzer-optimize" />
+	<haxedef name="lime_disable_sdl" if="mobile" />
 	
 	<!-- No Dead Code Elimination -->
 	<haxeflag name="-dce no" />
@@ -157,6 +158,10 @@
 	<haxeflag name="--macro" value="include('flixel.addons.transition')" />
 
 	<!-- _________________________________ Custom _______________________________ -->
+
+	<haxedef name="SHARE_MOBILE_FILES" if="mobile" />
+	<haxedef name="lime_use_old_deltatime" if="mobile" />
+	<haxedef name="openfl_pool_events" if="mobile" />
 
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
 	
