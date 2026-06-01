@@ -502,8 +502,10 @@ class FreeplayState extends MusicBeatState
 					});
 				}
 			}
-			if (accepted && canInteract && !songs[curSelected].locked)
+			// Re-validate selection right before indexing (timers/tweens can repopulate lists during unlock transitions).
+			if (accepted && canInteract && songs != null && songs.length > 0 && curSelected >= 0 && curSelected < songs.length && !songs[curSelected].locked)
 			{
+
 				for (song in grpSongs)
 				{
 					song.menuItemTween?.cancel();
@@ -957,6 +959,16 @@ class FreeplayState extends MusicBeatState
 
 		// Change the selection to the current unlocking song.
 		changeSelection(selectChange);
+
+		// Re-check bounds just before indexing (lists can change during transitions).
+		if (songs == null || index < 0 || index >= songs.length)
+			return;
+		if (grpIcons == null || grpIcons.members == null || index >= grpIcons.members.length)
+			return;
+		if (grpSongs == null || grpSongs.members == null || index >= grpSongs.members.length)
+			return;
+		if (songs[index] == null)
+			return;
 
 		var songIcon:HealthIcon = grpIcons.members[index];
 		var songText:FreeplayAlphabet = grpSongs.members[index];

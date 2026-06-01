@@ -193,7 +193,7 @@ class BotTrotEvents extends SongModule
                 game.camGame.setFollow(game.dad.cameraFocusPoint.x, game.dad.cameraFocusPoint.y);
                 game.camGame.lockTarget = true;
                 game.forceFocusOnChar = true;
-                
+
                 game.dad.canDance = false;
                 game.dad.playAnim('game', true);
                 game.dad.animation.onFinish.addOnce(function(anim:String) {
@@ -219,22 +219,28 @@ class BotTrotEvents extends SongModule
                     game.camHUD.filters = [];
                     FlxTween.tween(vignette, {alpha: 1}, 0.5);
                 }
+                return;
             case 512:
                 game.defaultCamZoom = 0.8;
                 tweenMatrix(dark, 0.5, FlxEase.backOut);
                 FlxTween.tween(vignette, {alpha: 0}, 0.5);
+                return;
             case 640:
                 game.defaultCamZoom = 0.7;
+                return;
             case 768, 832:
                 game.defaultCamZoom = 0.9;
+                return;
             case 800:
                 game.defaultCamZoom -= 0.2;
+                return;
             case 864:
                 game.defaultCamZoom = 0.65;
 
                 game.camGame.setFollow(game.boyfriend.cameraFocusPoint.x - 250, game.boyfriend.cameraFocusPoint.y);
                 game.camGame.lockTarget = true;
                 game.forceFocusOnChar = true;
+                return;
             case 1024:
                 tweenMatrix(normal, 0.5, FlxEase.backOut);
                 FlxTween.tween(vignette, {alpha: 0}, 0.5);
