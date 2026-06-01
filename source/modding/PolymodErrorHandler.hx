@@ -10,14 +10,14 @@ class PolymodErrorHandler
     {
         switch (error.code)
         {
-            case SCRIPT_PARSE_FAILED:
+            case SCRIPT_PARSE_ERROR:
                 // Print the parsing error in the console.
                 log(ERROR, error.message);
 
                 // Show a popup.
                 showErrorAlert(error.message, 'There was an error while parsing a script.');
 
-            case SCRIPTED_CLASS_BLACKLISTED_MODULE:
+            case SCRIPT_CLASS_MODULE_BLACKLISTED:
                 log(ERROR, error.message);
 
                 // Show a pop-up for a blacklist error.
@@ -28,30 +28,30 @@ class PolymodErrorHandler
                 log(ERROR, 'SCRIPT RUNTIME ERROR - ${error.message}');
 
                 showErrorAlert(error.message, 'There was an error while the script was running.');
-            case MOD_METADATA_PARSE_FAILED, MOD_VERSION_PARSE_FAILED, MOD_API_VERSION_PARSE_FAILED, APP_API_VERSION_PARSE_FAILED:
+            case PARSE_MOD_META, PARSE_MOD_VERSION, PARSE_MOD_API_VERSION, PARSE_API_VERSION:
                 log(ERROR, 'MOD PARSING ERROR - ${error.message}');
 
                 showErrorAlert(error.message, 'There was an error while parsing a mod.');
                 
-            case SCRIPTED_CLASS_NOT_REGISTERED, SCRIPTED_CLASS_UNRESOLVED_IMPORT:
+            case SCRIPT_CLASS_NOT_REGISTERED, SCRIPT_CLASS_MODULE_NOT_FOUND:
                 log(WARNING, 'SCRIPT WARNING - ${error.message}');
                 
                 showErrorAlert(error.message, 'Polymod Script Notice');
                 
             case MOD_LOAD_FAILED:
-                log(INFO, '[MOD] FAILED TO LOAD - ${error.message}');
-            case MOD_LOAD_START:
-                log(INFO, '[MOD] LOADING - ${error.message}');
+                log(NOTICE, '[MOD] FAILED TO LOAD - ${error.message}');
+            case MOD_LOAD_PREPARE:
+                log(NOTICE, '[MOD] LOADING - ${error.message}');
             case MOD_LOAD_DONE:
-                log(INFO, '[MOD] FINISHED LOADING: ${error.message}');
+                log(NOTICE, '[MOD] FINISHED LOADING: ${error.message}');
 
             case SCRIPT_NOT_FOUND:
                 log(ERROR, 'SCRIPT NOT FOUND - ${error.message}');
-            case SCRIPTED_CLASS_ALREADY_REGISTERED, SCRIPTED_CLASS_REDUNDANT_IMPORT:
+            case SCRIPT_CLASS_ALREADY_REGISTERED, SCRIPT_CLASS_MODULE_ALREADY_IMPORTED:
                 log(WARNING, 'SCRIPT INFO - ${error.message}');
-            case POLYMOD_NOT_INITIALIZED:
+            case POLYMOD_NOT_LOADED:
                 log(ERROR, 'NOT LOADED - ${error.message}');
-            case MOD_MISSING_DIRECTORY:
+            case MISSING_MOD:
                 log(ERROR, 'MISSING MOD - ${error.message}');
             default:
                 log(error.severity, error.message);
@@ -77,9 +77,8 @@ class PolymodErrorHandler
     {
         switch (type)
         {
-            case INFO: info(message);
+            case NOTICE: info(message);
             case WARNING: warning(message);
-            case DEBUG: debug(message);
             case ERROR: error(message);
         }
     }
