@@ -3,7 +3,7 @@ import play.character.CharacterType;
 class PolygonizedEvents extends SongModule
 {
     var pre3dSkin:String;
-    var screenShader:RuntimeShader = new RuntimeShader(Paths.frag('pulseEffect'));
+    var screenShader:RuntimeShader;
     var targetPulseVal:Float = 1;
     var shapeNoteWarning:FlxSprite;
     var shakeCam:Bool;
@@ -15,6 +15,8 @@ class PolygonizedEvents extends SongModule
 
     override function onCreate(e:ScriptEvent)
     {
+        screenShader = new RuntimeShader(Paths.frag('pulseEffect'));
+
         if (PlayStatePlaylist.isStoryMode)
         {
             game.startCallback = () -> {
