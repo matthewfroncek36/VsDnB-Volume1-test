@@ -74,8 +74,7 @@ class InitState extends FlxState
 		trace('STARTUP InitState: highscore load');
 		Highscore.load();
 		trace('STARTUP InitState: character select save skipped');
-		trace('STARTUP InitState: freeplay save');
-		FreeplayState.initSave();
+		trace('STARTUP InitState: freeplay save skipped');
 		trace('STARTUP InitState: saves ready');
 
 		// Initalize Discord RPC.
