@@ -20,6 +20,7 @@ import play.character.Character;
 import play.notes.NoteStyle;
 import play.notes.Note;
 import play.notes.StrumNote;
+import play.save.Preferences;
 
 import util.TweenUtil;
 
@@ -494,7 +495,7 @@ class Strumline extends FlxSpriteGroup
 		{
 			if (holdNote.sustainLength < holdNote.fullSustainLength)
 			{
-				if (isPlayer && (!isKeyHeld(holdNote.direction) || (holdNote.noteStyle == 'shape' && !PlayerSettings.controls.KEY5)
+				if (isPlayer && !Preferences.botplay && (!isKeyHeld(holdNote.direction) || (holdNote.noteStyle == 'shape' && !PlayerSettings.controls.KEY5)
 					|| (holdNote.noteStyle != 'shape' && PlayerSettings.controls.KEY5)))
 				{
 					holdNote.cover?.hide();

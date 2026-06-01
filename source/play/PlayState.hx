@@ -30,6 +30,8 @@ import openfl.Assets;
 import play.camera.CamZoomManager;
 import play.camera.FollowCamera;
 import play.character.Character;
+import play.character.Character.CharacterType;
+import play.character.FlareonCharacter;
 import play.dialogue.Dialogue;
 import play.notes.Note;
 import play.notes.StrumNote;
@@ -215,126 +217,7 @@ class PlayState extends MusicBeatState
 	 */
 	public var scrollType(default, set):String;
 
-public var botplayEnabled:Bool = false;
-private var botplayTxt:FlxText;
-public static var botplay:Bool = false;
-
-	// ===================================================
-	// AUTO BOTPLAY HIT SYSTEM (Vs D&B Volume 1)
-	// ===================================================
-	function botplayAutoHit():Void
-	{
-		// Loop all spawned notes on the player's strumline
-		playingStrumline.forEachNote(function(note:Note)
-		{
-			if (note == null)
-				return;
-
-			// Only player notes
-			if (!note.mustPress)
-				return;
-
-			// Must be hittable
-			if (!note.canBeHit)
-				return;
-
-			// Already hit, skip
-			if (note.hasBeenHit)
-				return;
-
-			// Trigger correct hit system
-			playingStrumline.hitNote(note);
-
-			// Custom animation override (optional)
-			var anim = botGetSingAnim(note.direction);
-			playingChar.playAnim(anim, true);
-			playingChar.holdTimer = 0;
-
-			note.hasBeenHit = true;
-		});
-	}
-
-	// return correct animation name
-	function botGetSingAnim(dir:Int):String
-	{
-		return switch (dir)
-		{
-			case 0: "singLEFT";
-			case 1: "singDOWN";
-			case 2: "singUP";
-			case 3: "singRIGHT";
-			default: "idle";
-		}
-	}
-
-function updateBotplay(elapsed:Float)
-{
-    if (!botplay) return;
-
-    // Your player strumline:
-    var pl:Strumline = playingStrumline; // adjust if player index differs
-
-    // Get all notes that are hittable
-    var possibleNotes:Array<Note> = pl.getPossibleNotes();
-
-    // Sort by closest to hit
-    possibleNotes.sort(function(a, b) {
-        return Reflect.compare(
-            Math.abs(Conductor.instance.songPosition - a.strumTime),
-            Math.abs(Conductor.instance.songPosition - b.strumTime)
-        );
-    });
-
-    // ---- HIT TAPS ----
-    for (note in possibleNotes)
-    {
-        if (note == null) continue;
-        if (note.hasBeenHit) continue;
-
-        // Tap note (no sustain)
-        if (note.sustainNote == null)
-        {
-            pl.pressKey(note.direction);
-            pl.hitNote(note);
-            pl.releaseKey(note.direction);
-        }
-        else
-        {
-            // HIT START OF HOLD
-            if (!note.sustainNote.hasBeenHit)
-            {
-                pl.pressKey(note.direction);
-                pl.hitNote(note);
-            }
-        }
-    }
-
-    // ---- HOLD SUSTAINS ----
-    pl.forEachHoldNote(function(hold:SustainNote)
-    {
-        if (hold == null) return;
-
-        var now = Conductor.instance.songPosition;
-
-        // Sustain active window
-        if (now >= hold.strumTime && now <= hold.strumTime + hold.fullSustainLength)
-        {
-            // keep key held
-            pl.pressKey(hold.direction);
-
-            if (!hold.hasBeenHit)
-            {
-                hold.hasBeenHit = true;
-                hold.hasMissed = false;
-            }
-        }
-        else
-        {
-            // release when finished
-            pl.releaseKey(hold.direction);
-        }
-    });
-}
+	private var botplayTxt:FlxText;
 
 	function set_scrollType(value:String):String
 	{
@@ -934,15 +817,14 @@ function updateBotplay(elapsed:Float)
 			}
 		});
 
-		// ===================================================
-		// BOTPLAY: auto-hit notes when the preference is enabled
-		// =======================================================
 		if (Preferences.botplay)
 		{
-			botplayAutoHit();
+			handleBotplayInputs();
 		}
-
-		handleInputs();
+		else
+		{
+			handleInputs();
+		}
 		processNotes(elapsed);
 	}
 
@@ -1187,8 +1069,13 @@ function updateBotplay(elapsed:Float)
 		{
 			case 'downscroll':
 				this.scrollType = value ? 'downscroll' : 'upscroll';
+				if (botplayTxt != null)
+					botplayTxt.y = healthBar.y + (value ? 100 : -100);
 			case 'ghostTapping':
 				this.ghostTapping = value;
+			case 'botplay':
+				if (botplayTxt != null)
+					botplayTxt.visible = value;
 			case 'hitsounds':
 				if (value)
 				{
@@ -1351,13 +1238,13 @@ function updateBotplay(elapsed:Float)
 		var customChar:Null<String> = (PlayStatePlaylist.isStoryMode || FreeplayState.skipSelect.contains(currentSong.id.toLowerCase()) || customVariation) ? null : CharacterSelect.selectedCharacter;
 
 		var dadChar = dadOverride != null ? dadOverride : currentChart.opponent;
-		dad = Character.create(100, 450, dadChar, OPPONENT);
+		dad = createPlayStateCharacter(100, 450, dadChar, OPPONENT);
 
 		var bfChar:String = bfOverride != null ? bfOverride : customChar != null ? customChar : currentChart.player;
-		boyfriend = Character.create(770, 450, bfChar, PLAYER);
+		boyfriend = createPlayStateCharacter(770, 450, bfChar, PLAYER);
 
 		var gfVersion:String = (gfOverride != null) ? gfOverride : (boyfriend.skins.exists('gfSkin')) ? boyfriend.skins.get('gfSkin') : currentChart.girlfriend;
-		gf = Character.create(400, 130, gfVersion, GF);
+		gf = createPlayStateCharacter(400, 130, gfVersion, GF);
 
 		// Add the characters into the stage.
 		// This is where they'll be re-positioned, and properly initalized.
@@ -1370,6 +1257,24 @@ function updateBotplay(elapsed:Float)
 		// Cache the opponent and player note skins so they don't cause stutters.
 		Preloader.cacheNoteStyle(dad.skins.get('noteSkin'));
 		Preloader.cacheNoteStyle(boyfriend.skins.get('noteSkin'));
+	}
+
+	function createPlayStateCharacter(x:Float, y:Float, charId:String, type:CharacterType):Character
+	{
+		var normalizedId:String = (charId == null || charId.length < 1) ? 'bf' : charId;
+		var character:Character = switch (normalizedId.toLowerCase())
+		{
+			case 'flareon', 'flareon-png', 'flareon-rig':
+				var flareon = new FlareonCharacter(x, y, normalizedId, type == PLAYER);
+				flareon.characterType = type;
+				ScriptEventDispatcher.callEvent(flareon, new ScriptEvent(CREATE, false));
+				flareon;
+			default:
+				Character.create(x, y, normalizedId, type);
+		}
+
+		character.setPosition(x, y);
+		return character;
 	}
 
 	/**
@@ -1937,6 +1842,59 @@ function updateBotplay(elapsed:Float)
 		}
 	}
 
+	private function handleBotplayInputs():Void
+	{
+		if (isInCutscene || !generatedMusic)
+			return;
+
+		var heldDirections:Array<Bool> = [for (i in 0...playingStrumline.strumAmount) false];
+		var now:Float = Conductor.instance.songPosition;
+
+		playingStrumline.forEachHoldNote(function(holdNote:SustainNote)
+		{
+			if (holdNote.hasBeenHit && !holdNote.hasMissed && now <= holdNote.strumTime + holdNote.fullSustainLength)
+			{
+				heldDirections[holdNote.direction] = true;
+				playingStrumline.pressKey(holdNote.direction);
+			}
+		});
+
+		var possibleNotes:Array<Note> = playingStrumline.getPossibleNotes();
+		haxe.ds.ArraySort.sort(possibleNotes, function(a:Note, b:Note):Int
+		{
+			return Std.int(a.strumTime - b.strumTime);
+		});
+
+		for (note in possibleNotes)
+		{
+			if (now < note.strumTime)
+				continue;
+
+			var direction:Int = note.direction % playingStrumline.strumAmount;
+			playingStrumline.pressKey(direction);
+
+			if (note.sustainNote != null)
+				heldDirections[direction] = true;
+
+			playingStrumline.hitNote(note);
+		}
+
+		for (direction in 0...playingStrumline.strumAmount)
+		{
+			if (heldDirections[direction])
+			{
+				playingStrumline.pressKey(direction);
+			}
+			else
+			{
+				playingStrumline.releaseKey(direction);
+				var strum:StrumNote = playingStrumline.strums.members[direction];
+				if (strum != null && strum.animation.curAnim != null && !strum.animation.curAnim.name.startsWith('confirm'))
+					strum.playStatic();
+			}
+		}
+	}
+
 	/**
 	 * Changes gameplay depending on a note's current state (ones that may have been missed, pressed, etc).
 	 * Note states are handled and updated accordingly from `Strumline.hx` 
@@ -2485,7 +2443,7 @@ function updateBotplay(elapsed:Float)
 		}
 		else
 		{
-			dad = Character.create(position.x, position.y, newChar, OPPONENT);
+			dad = createPlayStateCharacter(position.x, position.y, newChar, OPPONENT);
 		}
 
 		this.currentStage.addCharacter(dad, dad.characterType, position, reposition);
@@ -2521,7 +2479,7 @@ function updateBotplay(elapsed:Float)
 		}
 		else
 		{
-			boyfriend = Character.create(position.x, position.y, newChar, PLAYER);
+			boyfriend = createPlayStateCharacter(position.x, position.y, newChar, PLAYER);
 		}
 		this.currentStage.addCharacter(boyfriend, boyfriend.characterType, position, reposition);
 		
@@ -2551,7 +2509,7 @@ function updateBotplay(elapsed:Float)
 		}
 		else
 		{
-			gf = Character.create(position.x, position.y, newChar, GF);
+			gf = createPlayStateCharacter(position.x, position.y, newChar, GF);
 		}
 
 		this.currentStage.addCharacter(gf, gf.characterType, position, reposition);

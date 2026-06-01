@@ -56,6 +56,9 @@ class Options_General extends SettingsCategory
 				Preferences.botplay = value;
 			}
 		});
+		checkbox_botplay.setChecked(Preferences.botplay, false, true);
+		list.push(checkbox_botplay);
+		add(checkbox_botplay);
 
 		var option_keybinds = new CallbackOption(400, 600, {
 			name: LanguageManager.getTextString('settings_general_keybinds'),
