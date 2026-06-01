@@ -1,5 +1,7 @@
 package play.notes;
 
+import flixel.FlxG;
+
 import data.song.SongData.SongSection;
 import data.song.SongData.SongNoteData;
 import backend.Conductor;
@@ -279,7 +281,7 @@ class Strumline extends FlxSpriteGroup
 	 * The amount of strums this strumline has.
 	 * This can be used to support multi-key.
 	 */
-	public var strumAmount:Int = 4;
+	public static var strumAmount:Int = 4;
 
 	/**
 	 * Mapping of the currently held note directions.
@@ -344,7 +346,7 @@ class Strumline extends FlxSpriteGroup
 			{
 				var gottaHitNote:Bool = section.mustHitSection;
 
-				if (note.direction > 3)
+				if (note.direction > strumAmount - 1)
 					gottaHitNote = !section.mustHitSection;
 				
 				if (gottaHitNote != isPlayer)
@@ -362,6 +364,18 @@ class Strumline extends FlxSpriteGroup
 	 */
 	public function generateStaticArrows(fadeIn:Bool):Void
 	{
+		strumAmount = (FlxG.state is PlayState) ? PlayState.instance.currentChart.keyCount : 4;
+
+		NOTE_WIDTH = switch (strumAmount)
+		{
+			case 5: 160 * 0.6;
+			case 6: 160 * 0.525;
+			case 7: 160 * 0.45;
+			case 8, 9: 160 * 0.4;
+			case 12: 160 * 0.3;
+			default: 160 * 0.7;
+		}
+
 		for (i in 0...strumAmount)
 		{
 			var babyArrow:StrumNote = new StrumNote(0.0, 0.0, noteStyle, i, isPlayer);
@@ -743,6 +757,7 @@ class Strumline extends FlxSpriteGroup
 		note.phoneHit = false;
 		note.noteData = data;
 		note.direction = data.getDirection();
+		note.originalType = data.getDirection();
 		note.mustPress = this.isPlayer;
 
 		note.hasBeenHit = false;
