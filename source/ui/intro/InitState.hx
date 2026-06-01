@@ -39,10 +39,8 @@ class InitState extends FlxState
 {
 	public override function create()
 	{
-		trace('STARTUP InitState: create begin');
 		// Bind the save data to the correct path.
 		FlxG.save.bind('funkin', 'dnbteam');
-		trace('STARTUP InitState: save bound');
 
 		// Sets sprites to be automatically antialiased when created.
 		FlxSprite.defaultAntialiasing = true;
@@ -59,41 +57,28 @@ class InitState extends FlxState
 
 		// Initalize the cursor.
 		Cursor.initalize();
-		trace('STARTUP InitState: cursor ready');
 		
 		// Load the user's preferences.
 		Preferences.init();
-		trace('STARTUP InitState: preferences ready');
 
 		// Initalize controls.
 		PlayerSettings.init();
 		KeybindPrefs.loadControls();
-		trace('STARTUP InitState: controls ready');
 		
 		// Load any necessary save data.
-		trace('STARTUP InitState: highscore load');
 		Highscore.load();
-		trace('STARTUP InitState: character select save skipped');
-		trace('STARTUP InitState: freeplay save skipped');
-		trace('STARTUP InitState: saves ready');
 
 		// Initalize Discord RPC.
 		#if desktop
 		DiscordClient.prepare();
 		#end
-		trace('STARTUP InitState: discord ready');
 		
 		intializeRegistries();
-		trace('STARTUP InitState: registries ready');
 		initalizePlugins();
-		trace('STARTUP InitState: plugins ready');
 		initalizeTransitions();
-		trace('STARTUP InitState: transitions ready');
 		
 		Preloader.initalize();
-		trace('STARTUP InitState: preloader ready');
 		CrashHandler.initalize();
-		trace('STARTUP InitState: crash handler ready');
 		
 		#if debug
 		if (FlxG.save.data.hasSeenOptionsReminder == null || !FlxG.save.data.hasSeenOptionsReminder)
@@ -117,33 +102,21 @@ class InitState extends FlxState
 
 	function intializeRegistries():Void
 	{		
-		trace('STARTUP Registries: language');
 		// TODO: Move this to a registry maybe ?
 		LanguageManager.init();
 
-		trace('STARTUP Registries: characters');
 		CharacterRegistry.instance.loadEntries();
-		trace('STARTUP Registries: stages');
 		StageRegistry.instance.loadEntries();
-		trace('STARTUP Registries: players');
 		PlayerRegistry.instance.loadEntries();
-		trace('STARTUP Registries: subtitles');
 		SubtitleRegistry.instance.loadEntries();
-		trace('STARTUP Registries: songs');
 		SongRegistry.instance.loadEntries();
-		trace('STARTUP Registries: dialogues');
 		DialogueRegistry.instance.loadEntries();
-		trace('STARTUP Registries: speakers');
 		SpeakerRegistry.instance.loadEntries();
 
-		trace('STARTUP Registries: song modules');
         play.song.SongModuleHandler.loadModules();
 		
-		trace('STARTUP Registries: module callbacks');
 		scripting.module.ModuleHandler.buildModuleCallbacks();
-		trace('STARTUP Registries: modules load');
 		scripting.module.ModuleHandler.loadModules();
-		trace('STARTUP Registries: modules create');
 		scripting.module.ModuleHandler.callOnCreate();
 	}
 

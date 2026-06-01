@@ -71,14 +71,7 @@ class GameSplash extends FlxState
 		#end
 		FlxG.autoPause = true;
 
-		if (FlxG.save.data.hasSeenOptionsReminder == null || !FlxG.save.data.hasSeenOptionsReminder)
-		{
-			FlxG.switchState(() -> new OptionsReminderState());
-		}
-		else
-		{
-			FlxG.switchState(() -> new TitleState());
-		}
+		FlxG.switchState(() -> new TitleState());
 
 		@:privateAccess
 		FlxG.game._gameJustStarted = true;
