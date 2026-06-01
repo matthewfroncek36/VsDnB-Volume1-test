@@ -72,6 +72,7 @@ abstract NoteStyle(String) from String to String
 		{
 			case '3d': '3d/NOTE_3D_holds';
 			case 'shape': 'shape/NOTE_Shape_holds';
+			case 'phone' | 'phone-alt': 'phone/NOTE_phone';
 			case 'top10': 'top10/OMGtop10awesomehi';
 			case 'pixel': 'pixel/NOTE_pixel_hold';
 			default: 'normal/NOTE_hold_assets';
@@ -348,31 +349,90 @@ abstract NoteStyle(String) from String to String
 				sprite.animation.add('bluehold', [1]);
 				sprite.animation.add('greenhold', [2]);
 				sprite.animation.add('redhold', [3]);
+				sprite.animation.add('yellowhold', [4]);
+				sprite.animation.add('violethold', [5]);
+				sprite.animation.add('crimsonhold', [6]);
+				sprite.animation.add('cobalthold', [7]);
+				sprite.animation.add('whitehold', [8]);
+				sprite.animation.add('pinkhold', [9]);
+				sprite.animation.add('turqhold', [10]);
+				sprite.animation.add('emeraldhold', [11]);
+				sprite.animation.add('lightredhold', [12]);
 
-				sprite.animation.add('purpleholdend', [4]);
-				sprite.animation.add('blueholdend', [5]);
-				sprite.animation.add('greenholdend', [6]);
-				sprite.animation.add('redholdend', [7]);
+				sprite.animation.add('purpleholdend', [13]);
+				sprite.animation.add('blueholdend', [14]);
+				sprite.animation.add('greenholdend', [15]);
+				sprite.animation.add('redholdend', [16]);
+				sprite.animation.add('yellowholdend', [17]);
+				sprite.animation.add('violetholdend', [18]);
+				sprite.animation.add('crimsonholdend', [19]);
+				sprite.animation.add('cobaltholdend', [20]);
+				sprite.animation.add('whiteholdend', [21]);
+				sprite.animation.add('pinkholdend', [22]);
+				sprite.animation.add('turqholdend', [23]);
+				sprite.animation.add('emeraldholdend', [24]);
+				sprite.animation.add('lightredholdend', [25]);
 			case 'shape':
 				sprite.animation.addByPrefix('purplehold', 'purple hold piece');
 				sprite.animation.addByPrefix('greenhold', 'green hold piece');
 				sprite.animation.addByPrefix('redhold', 'red hold piece');
 				sprite.animation.addByPrefix('bluehold', 'blue hold piece');
+				sprite.animation.addByPrefix('cobalthold', 'cobalt hold piece');
+				sprite.animation.addByPrefix('yellowhold', 'yellow hold piece');
 
 				sprite.animation.addByPrefix('purpleholdend', 'purple hold piece');
 				sprite.animation.addByPrefix('greenholdend', 'green hold piece');
 				sprite.animation.addByPrefix('redholdend', 'red hold piece');
 				sprite.animation.addByPrefix('blueholdend', 'blue hold piece');
+				sprite.animation.addByPrefix('cobaltholdend', 'cobalt hold piece');
+				sprite.animation.addByPrefix('yellowholdend', 'yellow hold piece');
+			case 'phone':
+				sprite.animation.addByPrefix('purpleholdend', 'pruple end hold');
+				sprite.animation.addByPrefix('blueholdend', 'blue hold end');
+				sprite.animation.addByPrefix('greenholdend', 'green hold end');
+				sprite.animation.addByPrefix('redholdend', 'red hold end');
+				sprite.animation.addByPrefix('whiteholdend', 'white hold end');
+				sprite.animation.addByPrefix('yellowholdend', 'yellow hold end');
+				sprite.animation.addByPrefix('violetholdend', 'violet hold end');
+				sprite.animation.addByPrefix('cobaltholdend', 'cobalt hold end');
+				sprite.animation.addByPrefix('crimsonholdend', 'crimson hold end');
+				sprite.animation.addByPrefix('purplehold', 'purple hold piece');
+				sprite.animation.addByPrefix('bluehold', 'blue hold piece');
+				sprite.animation.addByPrefix('greenhold', 'green hold piece');
+				sprite.animation.addByPrefix('redhold', 'red hold piece');
+				sprite.animation.addByPrefix('whitehold', 'white hold piece');
+				sprite.animation.addByPrefix('yellowhold', 'yellow hold piece');
+				sprite.animation.addByPrefix('violethold', 'violet hold piece');
+				sprite.animation.addByPrefix('cobalthold', 'cobalt hold piece');
+				sprite.animation.addByPrefix('crimsonhold', 'crimson hold piece');
 			default:
 				sprite.animation.addByPrefix('purpleholdend', 'pruple end hold');
 				sprite.animation.addByPrefix('blueholdend', 'blue hold end');
 				sprite.animation.addByPrefix('greenholdend', 'green hold end');
 				sprite.animation.addByPrefix('redholdend', 'red hold end');
+				sprite.animation.addByPrefix('whiteholdend', 'white hold end');
+				sprite.animation.addByPrefix('yellowholdend', 'yellow hold end');
+				sprite.animation.addByPrefix('violetholdend', 'violet hold end');
+				sprite.animation.addByPrefix('cobaltholdend', 'cobalt hold end');
+				sprite.animation.addByPrefix('crimsonholdend', 'crimson hold end');
+				sprite.animation.addByPrefix('emeraldholdend', 'emerald hold end');
+				sprite.animation.addByPrefix('lightredholdend', 'lightred hold end');
+				sprite.animation.addByPrefix('turqholdend', 'turq hold end');
+				sprite.animation.addByPrefix('pinkholdend', 'pink hold end');
 
 				sprite.animation.addByPrefix('purplehold', 'purple hold piece');
 				sprite.animation.addByPrefix('bluehold', 'blue hold piece');
 				sprite.animation.addByPrefix('greenhold', 'green hold piece');
 				sprite.animation.addByPrefix('redhold', 'red hold piece');
+				sprite.animation.addByPrefix('whitehold', 'white hold piece');
+				sprite.animation.addByPrefix('yellowhold', 'yellow hold piece');
+				sprite.animation.addByPrefix('violethold', 'violet hold piece');
+				sprite.animation.addByPrefix('cobalthold', 'cobalt hold piece');
+				sprite.animation.addByPrefix('crimsonhold', 'crimson hold piece');
+				sprite.animation.addByPrefix('emeraldhold', 'emerald hold piece');
+				sprite.animation.addByPrefix('lightredhold', 'lightred hold piece');
+				sprite.animation.addByPrefix('turqhold', 'turq hold piece');
+				sprite.animation.addByPrefix('pinkhold', 'pink hold piece');
 		}
 		sprite.updateAnimations();
 	}
@@ -388,13 +448,54 @@ abstract NoteStyle(String) from String to String
 		{
 			case 'pixel':
 				sprite.animation.add('static', [ID]);
-				sprite.animation.add('pressed', [4 + ID, 8 + ID], 12, false);
-				sprite.animation.add('confirm', [12 + ID, 16 + ID], 12, false);
-				sprite.animation.add('confirm-hold', [12 + ID, 16 + ID], 12, false);
+				sprite.animation.add('pressed', [Strumline.strumAmount + ID, Strumline.strumAmount * 2 + ID], 12, false);
+				sprite.animation.add('confirm', [Strumline.strumAmount * 3 + ID, Strumline.strumAmount * 4 + ID], 12, false);
+				sprite.animation.add('confirm-hold', [Strumline.strumAmount * 3 + ID, Strumline.strumAmount * 4 + ID], 16, false);
+			case 'shape':
+				var staticAnims:Array<String>;
+				var anims:Array<String>;
+				switch (Strumline.strumAmount)
+				{
+					case 6:
+						staticAnims = ['left', 'up', 'right', 'secondleft', 'down', 'secondright'];
+						anims = ['left', 'up', 'right', 'second left', 'down', 'second right'];
+					default:
+						staticAnims = ['left', 'down', 'up', 'right'];
+						anims = ['left', 'down', 'up', 'right'];
+				}
+				sprite.animation.addByPrefix('static', 'arrow${staticAnims[ID].toUpperCase()}');
+				sprite.animation.addByPrefix('pressed', '${anims[ID]} press', 24, false);
+				sprite.animation.addByPrefix('confirm', '${anims[ID]} confirm', 24, false);
+				sprite.animation.addByPrefix('confirm-hold', '${anims[ID]} confirm', 24, false);
 			default:
-				var anims:Array<String> = ['left', 'down', 'up', 'right'];
+				var staticAnims:Array<String>;
+				var anims:Array<String>;
+				switch (Strumline.strumAmount)
+				{
+					case 5:
+						staticAnims = ['left', 'down', 'space', 'up', 'right'];
+						anims = ['left', 'down', 'space', 'up', 'right'];
+					case 6:
+						staticAnims = ['left', 'up', 'right', 'left', 'down', 'right'];
+						anims = ['left', 'up', 'right', 'second left', 'down', 'second right'];
+					case 7:
+						staticAnims = ['left', 'up', 'right', 'space', 'left', 'down', 'right'];
+						anims = ['left', 'up', 'right', 'space', 'second left', 'down', 'second right'];
+					case 8:
+						staticAnims = ['left', 'down', 'up', 'right', 'left', 'down', 'up', 'right'];
+						anims = ['left', 'down', 'up', 'right', 'second left', 'second down', 'second up', 'second right'];
+					case 9:
+						staticAnims = ['left', 'down', 'up', 'right', 'space', 'left', 'down', 'up', 'right'];
+						anims = ['left', 'down', 'up', 'right', 'space', 'second left', 'second down', 'second up', 'second right'];
+					case 12:
+						staticAnims = ['left', 'down', 'up', 'right', 'leftsharp', 'downsharp', 'upsharp', 'rightsharp', 'left', 'down', 'up', 'right'];
+						anims = ['left', 'down', 'up', 'right', 'third left', 'third down', 'third up', 'third right', 'second left', 'second down', 'second up', 'second right'];
+					default:
+						staticAnims = ['left', 'down', 'up', 'right'];
+						anims = ['left', 'down', 'up', 'right'];
+				}
 
-				sprite.animation.addByPrefix('static', 'arrow${anims[ID].toUpperCase()}');
+				sprite.animation.addByPrefix('static', 'arrow${staticAnims[ID].toUpperCase()}', 0, false);
 				sprite.animation.addByPrefix('pressed', '${anims[ID]} press', 24, false);
 				sprite.animation.addByPrefix('confirm', '${anims[ID]} confirm', 24, false);
 				sprite.animation.addByPrefix('confirm-hold', '${anims[ID]} confirm', 24, false);

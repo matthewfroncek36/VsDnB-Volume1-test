@@ -1360,14 +1360,24 @@ class PlayState extends MusicBeatState
 	function createStrums():Void
 	{
 		dadStrums = new Strumline({isPlayer: false, noteStyle: dad.skins.get('noteSkin'), scrollType: scrollType, showStrums: false});
-		dadStrums.x = 100;
+		dadStrums.x = switch (Strumline.strumAmount)
+		{
+			case 6, 7: 50;
+			case 8, 9, 12: 0;
+			default: 100;
+		}
 		dadStrums.cameras = [camHUD];
 		dadStrums.generateNotes(currentChart.notes);
 		add(dadStrums);
 		dadStrums.onNoteSpawn.add(onStrumlineNoteSpawn);
 
 		playerStrums = new Strumline({isPlayer: true, noteStyle: boyfriend.skins.get('noteSkin'), scrollType: scrollType, showStrums: false});
-		playerStrums.x = FlxG.width - playerStrums.width - 100;
+		playerStrums.x = switch (Strumline.strumAmount)
+		{
+			case 6, 7: FlxG.width - playerStrums.width - 50;
+			case 8, 9, 12: FlxG.width - playerStrums.width;
+			default: FlxG.width - playerStrums.width - 100;
+		}
 		playerStrums.cameras = [camHUD];
 		playerStrums.generateNotes(currentChart.notes);
 		add(playerStrums);
@@ -1385,7 +1395,7 @@ class PlayState extends MusicBeatState
 		playingStrumline.onNoteMiss.add(function(note:Note)
 		{
 			if (!noMiss)
-				noteMiss(note.direction, note, this.playingChar);
+				noteMiss(note.originalType, note, this.playingChar);
 
 			muteVocals();
 		});
@@ -1701,25 +1711,43 @@ class PlayState extends MusicBeatState
 	 * Handles all necessary inputs.
 	 * Responsible for managing controls, and player inputs.
 	 */
+	private function buildControlArray(pressed:Bool):Array<Bool>
+	{
+		var left = pressed ? controls.LEFT_P : controls.LEFT_R;
+		var down = pressed ? controls.DOWN_P : controls.DOWN_R;
+		var up = pressed ? controls.UP_P : controls.UP_R;
+		var right = pressed ? controls.RIGHT_P : controls.RIGHT_R;
+		var space = pressed ? controls.SPACE_P : controls.SPACE_R;
+		var secondLeft = pressed ? controls.SECOND_LEFT_P : controls.SECOND_LEFT_R;
+		var secondDown = pressed ? controls.SECOND_DOWN_P : controls.SECOND_DOWN_R;
+		var secondUp = pressed ? controls.SECOND_UP_P : controls.SECOND_UP_R;
+		var secondRight = pressed ? controls.SECOND_RIGHT_P : controls.SECOND_RIGHT_R;
+		var thirdLeft = pressed ? controls.THIRD_LEFT_P : controls.THIRD_LEFT_R;
+		var thirdDown = pressed ? controls.THIRD_DOWN_P : controls.THIRD_DOWN_R;
+		var thirdUp = pressed ? controls.THIRD_UP_P : controls.THIRD_UP_R;
+		var thirdRight = pressed ? controls.THIRD_RIGHT_P : controls.THIRD_RIGHT_R;
+
+		return switch (Strumline.strumAmount)
+		{
+			case 5: [left, down, space, up, right];
+			case 6: [left, up, right, secondLeft, down, secondRight];
+			case 7: [left, up, right, space, secondLeft, down, secondRight];
+			case 8: [left, down, up, right, secondLeft, secondDown, secondUp, secondRight];
+			case 9: [left, down, up, right, space, secondLeft, secondDown, secondUp, secondRight];
+			case 12: [left, down, up, right, thirdLeft, thirdDown, thirdUp, thirdRight, secondLeft, secondDown, secondUp, secondRight];
+			default: [left, down, up, right];
+		}
+	}
+
 	private function handleInputs():Void
 	{
 		if (isInCutscene)
 			return;
 
-		var upP = controls.UP_P;
-		var rightP = controls.RIGHT_P;
-		var downP = controls.DOWN_P;
-		var leftP = controls.LEFT_P;
-
-		var upR = controls.UP_R;
-		var rightR = controls.RIGHT_R;
-		var downR = controls.DOWN_R;
-		var leftR = controls.LEFT_R;
-		
 		var key5 = controls.KEY5 && shapeNoteSongs.contains(currentSong.id.toLowerCase());
 
-		var controlArray:Array<Bool> = [leftP, downP, upP, rightP];
-		var releaseArray:Array<Bool> = [leftR, downR, upR, rightR];
+		var controlArray:Array<Bool> = buildControlArray(true);
+		var releaseArray:Array<Bool> = buildControlArray(false);
 
 		if (pressingKey5Global != key5)
 		{
@@ -1798,13 +1826,13 @@ class PlayState extends MusicBeatState
 
 				for (note in possibleNotes)
 				{
-					if (controlArray[note.direction % 4]) // further tweaks to the conductor safe zone offset multiplier needed.
+					if (controlArray[note.direction % Strumline.strumAmount]) // further tweaks to the conductor safe zone offset multiplier needed.
 					{
 						if (lastHitNoteTime > Conductor.instance.songPosition - Conductor.instance.safeZoneOffset
 							&& lastHitNoteTime < Conductor.instance.songPosition +
 							(Conductor.instance.safeZoneOffset * 0.08)) // reduce the past allowed barrier just so notes close together that aren't jacks dont cause missed inputs
 						{
-							if ((note.direction % 4) == (lastHitNote % 4))
+							if ((note.direction % Strumline.strumAmount) == (lastHitNote % Strumline.strumAmount))
 							{
 								lastHitNoteTime = -999999; // reset the last hit note time
 								continue; // the jacks are too close together

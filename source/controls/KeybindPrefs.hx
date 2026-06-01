@@ -13,13 +13,22 @@ class KeybindPrefs
 		'down' => [S, DOWN],
 		'up' => [W, UP],
 		'right' => [D, RIGHT],
+		'space' => [SPACE],
+		'second-left' => [H],
+		'second-down' => [J],
+		'second-up' => [K],
+		'second-right' => [L],
+		'third-left' => [C],
+		'third-down' => [V],
+		'third-up' => [B],
+		'third-right' => [N],
 		'accept' => [SPACE, ENTER],
 		'key5' => [SPACE, SHIFT],
 		'back' => [BACKSPACE, ESCAPE],
 		'pause' => [ENTER, ESCAPE],
 		'reset' => [R, DELETE]
 	];
-	public static var controlNames:Array<String> = ['left', 'down', 'up', 'right', 'key5', 'accept', 'back', 'pause', 'reset'];
+	public static var controlNames:Array<String> = ['left', 'down', 'up', 'right', 'space', 'second-left', 'second-down', 'second-up', 'second-right', 'third-left', 'third-down', 'third-up', 'third-right', 'key5', 'accept', 'back', 'pause', 'reset'];
 
 	public static function saveControls()
 	{
