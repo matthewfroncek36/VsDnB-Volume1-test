@@ -387,6 +387,16 @@ class FreeplayState extends MusicBeatState
 			var downP = controls.DOWN_P || FlxG.mouse.wheel < 0;
 			var accepted = controls.ACCEPT;
 
+			// Safety guard: during transitions `songs`/UI list can be empty.
+			if (songs == null || songs.length == 0)
+				return;
+
+			// Clamp selection before any indexing.
+			if (curSelected < 0)
+				curSelected = 0;
+			if (curSelected >= songs.length)
+				curSelected = songs.length - 1;
+
 			onUpdate(elapsed);
 
 			if (upP && canInteract)
@@ -400,6 +410,7 @@ class FreeplayState extends MusicBeatState
 
 			if (controls.BACK && canInteract)
 			{
+
 				loadingPack = true;
 				canInteract = false;
 				
