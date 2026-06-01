@@ -7,7 +7,7 @@ enum BGType
 }
 class BotTrotEvents extends SongModule
 {
-    var curBg:BGType = BGType.Room;
+    var curBg:BGType;
 
     var greyscaleAmt:Float = 0.25;
     var normal:Array<Float> = [
@@ -55,6 +55,7 @@ class BotTrotEvents extends SongModule
     public function new()
     {
         super('botTrotEvents', 0, 'bot-trot');
+        curBg = BGType.Room;
     }
 
     function onCreatePost(e:ScriptEvent)

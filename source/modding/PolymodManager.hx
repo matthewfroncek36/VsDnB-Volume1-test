@@ -328,9 +328,9 @@ class PolymodManager
         
         // OPENFL //
         // Avoid registering certain types that can be abstracts on some targets.
-        // Polymod.addDefaultImport(openfl.filters.ColorMatrixFilter);
+        Polymod.addDefaultImport(openfl.filters.ColorMatrixFilter);
 
-        // Polymod.addDefaultImport(openfl.filters.ShaderFilter);
+        Polymod.addDefaultImport(openfl.filters.ShaderFilter);
 
         // Polymod.addDefaultImport(openfl.display.BlendMode);
 
