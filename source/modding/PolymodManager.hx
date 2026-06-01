@@ -77,6 +77,7 @@ class PolymodManager
             dirs: ids,
 			framework: OPENFL,
 			frameworkParams: buildFrameworkParams(),
+            parseRules: buildParseRules(),
             errorCallback: PolymodErrorHandler.printError,
             apiVersionRule: API_VERSION_RULE,
             useScriptedClasses: true,

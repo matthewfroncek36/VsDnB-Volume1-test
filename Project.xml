@@ -113,8 +113,8 @@
 	<haxedef name="hscriptPos" />
 
 	<!-- Configure Polymod -->
-	<haxedef name="POLYMOD_SCRIPT_EXT" value=".hx" />
-	<haxedef name="POLYMOD_SCRIPT_LIBRARY" value="scripts" />
+	<haxedef name="POLYMOD_SCRIPT_EXT" value=".hxc" />
+	<haxedef name="POLYMOD_SCRIPT_LIBRARY" value="default" />
 	<haxedef name="POLYMOD_ROOT_PATH" value="scripts/" />
 
 	<haxedef name="POLYMOD_APPEND_FOLDER" value="_append/" />
