@@ -1,6 +1,6 @@
 class TristanRoomStage extends Stage
 {
-    public override function new()
+    public function new()
     {
         super('tristanRoom');
     }

@@ -167,6 +167,6 @@
 
 	<!-- ________________________ Import Linux Stuff _____________________________ -->
 	<target id="haxe" tool="linker" if="linux">
-		<lib name="/usr/lib64/libX11.so" if="HXCPP_M64" />
+		<lib name="X11" if="HXCPP_M64" />
 	</target>
 </project>

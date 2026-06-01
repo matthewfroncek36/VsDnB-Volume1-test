@@ -10,8 +10,33 @@ on:
   workflow_dispatch:
 
 jobs:
-  buildWindows:
-    runs-on: windows-latest
+  build:
+    name: Build ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows
+            os: windows-latest
+            target: windows
+            artifactName: windowsBuild
+            artifactPath: export/release/windows/bin
+          - name: Linux
+            os: ubuntu-latest
+            target: linux
+            artifactName: linuxBuild
+            artifactPath: export/release/linux/bin
+          - name: macOS
+            os: macos-latest
+            target: mac
+            artifactName: macOSBuild
+            artifactPath: export/release/macos/bin
+          - name: HTML5
+            os: ubuntu-latest
+            target: html5
+            artifactName: html5Build
+            artifactPath: export/release/html5/bin
 
     steps:
       - uses: actions/checkout@v4
@@ -20,9 +45,15 @@ jobs:
         with:
           haxe-version: 4.3.4
 
+      - name: Install Linux build dependencies
+        if: runner.os == 'Linux' && matrix.target == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libvlc-dev libvlccore-dev libgl1-mesa-dev libx11-dev libxi-dev libxinerama-dev libxrandr-dev
+
       - name: Install Haxe dependencies
         run: |
-          haxelib setup C:/haxelib
+          haxelib setup "${{ runner.temp }}/haxelib"
           haxelib install hmm --quiet
           haxelib run hmm install
           haxelib list
@@ -31,10 +62,10 @@ jobs:
         run: echo "${{ github.run_id }}" > VERSION
 
       - name: Compile
-        run: haxelib run lime build windows --app-version="4.0.0-${{ github.run_id }}"
+        run: haxelib run lime build ${{ matrix.target }} --app-version="4.0.0-${{ github.run_id }}"
 
       - name: Publish Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: windowsBuild
-          path: export/release/windows/bin
+          name: ${{ matrix.artifactName }}
+          path: ${{ matrix.artifactPath }}
