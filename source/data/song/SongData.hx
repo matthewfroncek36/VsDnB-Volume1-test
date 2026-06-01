@@ -2,6 +2,7 @@ package data.song;
 
 import haxe.Json;
 import json2object.JsonWriter;
+import play.notes.Strumline;
 
 /**
  * A data object containing all of the data information for a song.
@@ -79,8 +80,13 @@ class SongMetadata
      */
     public var timeChanges:Array<SongTimeChange>;
 
+    /**
+     * How many keys there will be on the strumline.
+     */
+    @:default(4)
+    public var keyCount:Int;
 
-    public function new(songName:String, composers:Array<String>, artists:Array<String>, charters:Array<String>, coders:Array<String>)
+    public function new(songName:String, composers:Array<String>, artists:Array<String>, charters:Array<String>, coders:Array<String>, keyCount:Int = 4)
     {
         this.version = SongRegistry.METADATA_VERSION;
         this.songName = songName;
@@ -95,11 +101,12 @@ class SongMetadata
         this.girlfriend = 'gf';
 
         this.timeChanges = [];
+        this.keyCount = keyCount;
     }
 
     public function toString():String
     {
-        return '[SongMetadata] (${songName}) ([composers: ${composers}, artists: ${artists}, charters: ${charters}], [player: ${player}, opponent: ${opponent}, gf: ${girlfriend}], Time Changes: ${timeChanges})';
+        return '[SongMetadata] (${songName}) ([composers: ${composers}, artists: ${artists}, charters: ${charters}], [player: ${player}, opponent: ${opponent}, gf: ${girlfriend}], Time Changes: ${timeChanges}, keyCount: ${keyCount})';
     }
 
     /**
@@ -256,11 +263,11 @@ class SongNoteDataRaw
 
     /**
      * Gets the actual direction of this note data.
-     * @return A number between 0-3.
+     * @return A number within the current strumline key range.
      */
     public function getDirection():Int
     {
-        return direction % 4;
+        return direction % Strumline.strumAmount;
     }
 
     public function toString():String
