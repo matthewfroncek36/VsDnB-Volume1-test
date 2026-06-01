@@ -727,6 +727,10 @@ class FreeplayState extends MusicBeatState
 
 	function changeSelection(change:Int = 0)
 	{
+		// Safety guard: don't index `songs`/UI lists when they're not populated.
+		if (songs == null || songs.length == 0 || grpIcons == null || grpIcons.members == null || grpIcons.members.length == 0)
+			return;
+
 		SoundController.play(Paths.sound('scrollMenu'), 0.4);
 
 		curSelected += change;
@@ -737,10 +741,17 @@ class FreeplayState extends MusicBeatState
 		if (curSelected >= songs.length)
 			curSelected = 0;
 
+		// Clamp once more in case list sizes differ during transitions.
+		if (curSelected < 0)
+			curSelected = 0;
+		if (curSelected >= songs.length)
+			curSelected = songs.length - 1;
+
 		#if !switch
 		intendedScore = Highscore.getScore(songs[curSelected].song.id);
 		#end
 		var bullShit:Int = 0;
+
 
 		for (i in 0...grpIcons.members.length)
 		{
