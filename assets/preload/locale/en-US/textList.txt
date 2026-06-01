@@ -99,6 +99,15 @@ settings_keybinds_Left==Left
 settings_keybinds_Down==Down
 settings_keybinds_Up==Up
 settings_keybinds_Right==Right
+settings_keybinds_Space==Space
+settings_keybinds_Second_Left==Second Left
+settings_keybinds_Second_Down==Second Down
+settings_keybinds_Second_Up==Second Up
+settings_keybinds_Second_Right==Second Right
+settings_keybinds_Third_Left==Third Left
+settings_keybinds_Third_Down==Third Down
+settings_keybinds_Third_Up==Third Up
+settings_keybinds_Third_Right==Third Right
 settings_keybinds_Accept==Accept
 settings_keybinds_Back==Back
 settings_keybinds_Reset==Reset
